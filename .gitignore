@@ -1,0 +1,14 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+logs/
+index/
+data/chat_history.db
+data/raw/**/*.pdf
+data/raw/**/*.ppt
+data/raw/**/*.pptx
+data/raw/**/*.doc
+data/raw/**/*.docx
+data/raw/**/*.txt
+dataset/out/lora*/

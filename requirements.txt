@@ -1,0 +1,14 @@
+fastapi>=0.110
+uvicorn>=0.29
+streamlit>=1.35
+requests
+numpy
+scikit-learn
+faiss-cpu
+rank_bm25
+pdfplumber
+python-pptx
+python-docx
+pytesseract
+Pillow
+pydantic>=2
