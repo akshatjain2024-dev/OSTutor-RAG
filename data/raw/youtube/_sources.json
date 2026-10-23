@@ -1,0 +1,360 @@
+{
+ "L-1.10_User_mode_and_Kernel_mode_in_operating_system_in_hindi.txt": {
+  "topic": "OS Basics",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "User mode and Kernel mode in operating system",
+  "source": "YouTube: Gate Smashers L-1.10 User mode and Kernel mode in operating system"
+ },
+ "L-1.11_Process_Vs_Threads_in_Operating_System.txt": {
+  "topic": "Threads",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Process Vs Threads in Operating System",
+  "source": "YouTube: Gate Smashers L-1.11 Process Vs Threads in Operating System"
+ },
+ "L-1.12_User_Level_Vs_Kernel_Level_Thread_in_Operating_System__All_Imp_Points.txt": {
+  "topic": "Threads",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "User Level Vs Kernel Level Thread in Operating System - All Imp Points",
+  "source": "YouTube: Gate Smashers L-1.12 User Level Vs Kernel Level Thread in Operating System - All Imp Points"
+ },
+ "L-1.1_Introduction_to_Operating_System_and_its_Functions_with_English_Subtitles.txt": {
+  "topic": "OS Basics",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Introduction to Operating System and its Functions",
+  "source": "YouTube: Gate Smashers L-1.1 Introduction to Operating System and its Functions"
+ },
+ "L-1.2_Batch_Operating_System__Types_of_Operating_System.txt": {
+  "topic": "OS Basics",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Batch Operating System - Types of Operating System",
+  "source": "YouTube: Gate Smashers L-1.2 Batch Operating System - Types of Operating System"
+ },
+ "L-1.3_Multiprogramming_and_Multitasking_Operating_System_in_Hindi_with_real_life_examples.txt": {
+  "topic": "OS Basics",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Multiprogramming and Multitasking Operating System in Hindi with real life examples",
+  "source": "YouTube: Gate Smashers L-1.3 Multiprogramming and Multitasking Operating System in Hindi with real life examples"
+ },
+ "L-1.4_Types_of_OS_Real_Time_OS__Distributed__Clustered___Embedded_OS_.txt": {
+  "topic": "OS Basics",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Types of OS Real Time OS - Distributed - Clustered -  Embedded OS",
+  "source": "YouTube: Gate Smashers L-1.4 Types of OS Real Time OS - Distributed - Clustered -  Embedded OS"
+ },
+ "L-1.5_Process_States_in_Operating_System_Schedulers_Long_term_Short_term_Medium_term_.txt": {
+  "topic": "Process Management",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Process States in Operating System Schedulers Long term Short term Medium term",
+  "source": "YouTube: Gate Smashers L-1.5 Process States in Operating System Schedulers Long term Short term Medium term"
+ },
+ "L-1.6_Imp_Linux_Commands_Operating_System___Must_Watch_for_CollegeUniversity___Competitive_exams.txt": {
+  "topic": "Linux Commands",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Imp Linux Commands Operating System -  Must Watch for CollegeUniversity -  Competitive exams",
+  "source": "YouTube: Gate Smashers L-1.6 Imp Linux Commands Operating System -  Must Watch for CollegeUniversity -  Competitive exams"
+ },
+ "L-1.7_System_Calls_in_Operating_system_and_its_types_in_Hindi.txt": {
+  "topic": "System Calls",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "System Calls in Operating system and its types",
+  "source": "YouTube: Gate Smashers L-1.7 System Calls in Operating system and its types"
+ },
+ "L-1.8_Fork_System_call_with_Example__Fork___system_call_questions.txt": {
+  "topic": "System Calls",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Fork System call with Example - Fork -  system call questions",
+  "source": "YouTube: Gate Smashers L-1.8 Fork System call with Example - Fork -  system call questions"
+ },
+ "L-1.9_Questions_on_Fork_System_Call_With_Explanation__Operating_System.txt": {
+  "topic": "System Calls",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Questions on Fork System Call With Explanation - Operating System",
+  "source": "YouTube: Gate Smashers L-1.9 Questions on Fork System Call With Explanation - Operating System"
+ },
+ "L-2.1_Process_Scheduling_Algorithms__Preemption_Vs_Non-Preemption___CPU_Scheduling_in_OS.txt": {
+  "topic": "CPU Scheduling",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Process Scheduling Algorithms - Preemption Vs Non-Preemption -  CPU Scheduling in OS",
+  "source": "YouTube: Gate Smashers L-2.1 Process Scheduling Algorithms - Preemption Vs Non-Preemption -  CPU Scheduling in OS"
+ },
+ "L-2.2_What_is_Arrival__Burst__Completion__Turnaround__Waiting_and_Response_time_in_CPU_Scheduling.txt": {
+  "topic": "CPU Scheduling",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "What is Arrival - Burst - Completion - Turnaround - Waiting and Response time in CPU Scheduling",
+  "source": "YouTube: Gate Smashers L-2.2 What is Arrival - Burst - Completion - Turnaround - Waiting and Response time in CPU Scheduling"
+ },
+ "L-2.3_First_Come_First_Serve_FCFS__CPU_Scheduling_Algorithm_with_Example.txt": {
+  "topic": "CPU Scheduling",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "First Come First Serve FCFS - CPU Scheduling Algorithm with Example",
+  "source": "YouTube: Gate Smashers L-2.3 First Come First Serve FCFS - CPU Scheduling Algorithm with Example"
+ },
+ "L-2.4_Shortest_Job_First_SJF__Scheduling__Algorithm_with__Example__Operating_System.txt": {
+  "topic": "CPU Scheduling",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Shortest Job First SJF - Scheduling - Algorithm with - Example - Operating System",
+  "source": "YouTube: Gate Smashers L-2.4 Shortest Job First SJF - Scheduling - Algorithm with - Example - Operating System"
+ },
+ "L-2.5_Shortest_Remaining_Time_First__SJF_With_Preemption__Scheduling_Algorithm_with__Example__OS.txt": {
+  "topic": "CPU Scheduling",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Shortest Remaining Time First - SJF With Preemption - Scheduling Algorithm with - Example - OS",
+  "source": "YouTube: Gate Smashers L-2.5 Shortest Remaining Time First - SJF With Preemption - Scheduling Algorithm with - Example - OS"
+ },
+ "L-2.6_Question_on_Shortest_Job_First_SJF__with_Preemption_Scheduling_Algorithm.txt": {
+  "topic": "CPU Scheduling",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Question on Shortest Job First SJF - with Preemption Scheduling Algorithm",
+  "source": "YouTube: Gate Smashers L-2.6 Question on Shortest Job First SJF - with Preemption Scheduling Algorithm"
+ },
+ "L-2.7_Round_Robin_RR__CPU_Scheduling_Algorithm_with__Example.txt": {
+  "topic": "CPU Scheduling",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Round Robin RR - CPU Scheduling Algorithm with - Example",
+  "source": "YouTube: Gate Smashers L-2.7 Round Robin RR - CPU Scheduling Algorithm with - Example"
+ },
+ "L-2.8_Pre-emptive_Priority__Scheduling_Algorithm_with__Example__Operating_System.txt": {
+  "topic": "CPU Scheduling",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Pre-emptive Priority - Scheduling Algorithm with - Example - Operating System",
+  "source": "YouTube: Gate Smashers L-2.8 Pre-emptive Priority - Scheduling Algorithm with - Example - Operating System"
+ },
+ "L-3.2_Producer_Consumer_Problem__Process_Synchronization_Problem_in_Operating_System.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Producer Consumer Problem - Process Synchronization Problem in Operating System",
+  "source": "YouTube: Gate Smashers L-3.2 Producer Consumer Problem - Process Synchronization Problem in Operating System"
+ },
+ "L-3.1_Process_Synchronization__Process_Types__Race_Condition__Operating_System-1.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Process Synchronization - Process Types - Race Condition - Operating System-1",
+  "source": "YouTube: Gate Smashers L-3.1 Process Synchronization - Process Types - Race Condition - Operating System-1"
+ },
+ "L-2.10_Multi_Level_Queue_Scheduling__Operating_System.txt": {
+  "topic": "CPU Scheduling",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Multi Level Queue Scheduling - Operating System",
+  "source": "YouTube: Gate Smashers L-2.10 Multi Level Queue Scheduling - Operating System"
+ },
+ "L-3.11_Solution_of_Producer_Consumer_Problem_using_Semaphore__Operating_System.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Solution of Producer Consumer Problem using Semaphore - Operating System",
+  "source": "YouTube: Gate Smashers L-3.11 Solution of Producer Consumer Problem using Semaphore - Operating System"
+ },
+ "L-3.9_What_is_Binary_Semaphore__Easiest_Explanation__Operating_system.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "What is Binary Semaphore - Easiest Explanation - Operating system",
+  "source": "YouTube: Gate Smashers L-3.9 What is Binary Semaphore - Easiest Explanation - Operating system"
+ },
+ "L-3.7_Turn_Variable__Strict_Alteration_Method__Process_Synchronization.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Turn Variable - Strict Alteration Method - Process Synchronization",
+  "source": "YouTube: Gate Smashers L-3.7 Turn Variable - Strict Alteration Method - Process Synchronization",
+  "skip": true,
+  "note": "Hindi (Devanagari) auto-transcript, garbled; topic already covered in data/notes/05_synchronization.md"
+ },
+ "L-4.3_Multi-Instance_Resource_Allocation_Graph_with_Example__Operating_System.txt": {
+  "topic": "Deadlocks",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Multi-Instance Resource Allocation Graph with Example - Operating System",
+  "source": "YouTube: Gate Smashers L-4.3 Multi-Instance Resource Allocation Graph with Example - Operating System"
+ },
+ "L-3.13_Dining_philosophers_Problem_and_Solution_using_Semaphore_in_Operating_System.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Dining philosophers Problem and Solution using Semaphore in Operating System",
+  "source": "YouTube: Gate Smashers L-3.13 Dining philosophers Problem and Solution using Semaphore in Operating System"
+ },
+ "L-3.10_Practice_Question_on_Binary_Semaphore_in_Operating_System.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Practice Question on Binary Semaphore in Operating System",
+  "source": "YouTube: Gate Smashers L-3.10 Practice Question on Binary Semaphore in Operating System",
+  "skip": true,
+  "note": "Hindi (Devanagari) auto-transcript, garbled; topic already covered in data/notes/05_synchronization.md"
+ },
+ "L-3.8_Semaphores__Wait__Signal_Operation__Counting_Semaphore__Example_Operating_system.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Semaphores - Wait - Signal Operation - Counting Semaphore - Example Operating system",
+  "source": "YouTube: Gate Smashers L-3.8 Semaphores - Wait - Signal Operation - Counting Semaphore - Example Operating system"
+ },
+ "L-3.6_Test_and_Set_Instruction_in_OS__Process_Synchronization.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Test and Set Instruction in OS - Process Synchronization",
+  "source": "YouTube: Gate Smashers L-3.6 Test and Set Instruction in OS - Process Synchronization",
+  "skip": true,
+  "note": "Hindi (Devanagari) auto-transcript, garbled; topic already covered in data/notes/05_synchronization.md"
+ },
+ "L-2.11_Multilevel_Feedback_Queue_Scheduling__Operating_System.txt": {
+  "topic": "CPU Scheduling",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Multilevel Feedback Queue Scheduling - Operating System",
+  "source": "YouTube: Gate Smashers L-2.11 Multilevel Feedback Queue Scheduling - Operating System"
+ },
+ "L-4.2_Resource_Allocation_Graph_in_Deadlock__Single_Instance_with_example__Operating_System.txt": {
+  "topic": "Deadlocks",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Resource Allocation Graph in Deadlock - Single Instance with example - Operating System",
+  "source": "YouTube: Gate Smashers L-4.2 Resource Allocation Graph in Deadlock - Single Instance with example - Operating System"
+ },
+ "L-3.12_Solution_of_Readers-writers__Problem_using_Binary_semaphore.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Solution of Readers-writers - Problem using Binary semaphore",
+  "source": "YouTube: Gate Smashers L-3.12 Solution of Readers-writers - Problem using Binary semaphore"
+ },
+ "L-3.5_LOCK_Variable_in_OS__Process_Synchronization.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "LOCK Variable in OS - Process Synchronization",
+  "source": "YouTube: Gate Smashers L-3.5 LOCK Variable in OS - Process Synchronization",
+  "skip": true,
+  "note": "Hindi (Devanagari) auto-transcript, garbled; topic already covered in data/notes/05_synchronization.md"
+ },
+ "L-3.4_Critical_Section_Problem___Mutual_Exclusion__Progress_and_Bounded_Waiting__Operating_System.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Critical Section Problem -  Mutual Exclusion - Progress and Bounded Waiting - Operating System",
+  "source": "YouTube: Gate Smashers L-3.4 Critical Section Problem -  Mutual Exclusion - Progress and Bounded Waiting - Operating System"
+ },
+ "L-4.1_DEADLOCK_concept__Example__Necessary_condition__Operating_System.txt": {
+  "topic": "Deadlocks",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "DEADLOCK concept - Example - Necessary condition - Operating System",
+  "source": "YouTube: Gate Smashers L-4.1 DEADLOCK concept - Example - Necessary condition - Operating System"
+ },
+ "L-3.3_Printer-Spooler_Problem__Process_Synchronization_Problem_in_Operating_System.txt": {
+  "topic": "Process Synchronization",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Printer-Spooler Problem - Process Synchronization Problem in Operating System",
+  "source": "YouTube: Gate Smashers L-3.3 Printer-Spooler Problem - Process Synchronization Problem in Operating System"
+ },
+ "L-2.9_Example_of_Mix_Burst_Time_CPU___IO_both__in_CPU_Scheduling__Tough_Question.txt": {
+  "topic": "CPU Scheduling",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Example of Mix Burst Time CPU -  IO both - in CPU Scheduling - Tough Question",
+  "source": "YouTube: Gate Smashers L-2.9 Example of Mix Burst Time CPU -  IO both - in CPU Scheduling - Tough Question"
+ },
+ "L-5.5_First_Fit__Next_Fit__Best_Fit__Worst_fit_Memory_Allocation__Memory_Management__OS.txt": {
+  "topic": "Memory Management",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "First Fit - Next Fit - Best Fit - Worst fit Memory Allocation - Memory Management - OS",
+  "source": "YouTube: Gate Smashers L-5.5 First Fit - Next Fit - Best Fit - Worst fit Memory Allocation - Memory Management - OS"
+ },
+ "L-4.7_Question_Explaination_on_Deadlock__Operating_System.txt": {
+  "topic": "Deadlocks",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Question Explaination on Deadlock - Operating System",
+  "source": "YouTube: Gate Smashers L-4.7 Question Explaination on Deadlock - Operating System"
+ },
+ "Lec-0Operating_System_Syllabus_Discussion_for_all_CollegeUniversity___Competitive_exams__GATE_NET_.txt": {
+  "topic": "OS Basics",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Operating System Syllabus Discussion",
+  "source": "YouTube: Gate Smashers L-0 Operating System Syllabus Discussion"
+ },
+ "L-4.5_Deadlock_Avoidance_Banker_s_Algorithm_with_Example_With_English_Subtitles.txt": {
+  "topic": "Deadlocks",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Deadlock Avoidance Banker s Algorithm with Example With English Subtitles",
+  "source": "YouTube: Gate Smashers L-4.5 Deadlock Avoidance Banker s Algorithm with Example With English Subtitles"
+ },
+ "L-5.1_Memory_Management_and_Degree_of_Multiprogramming__Operating_System.txt": {
+  "topic": "Memory Management",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Memory Management and Degree of Multiprogramming - Operating System",
+  "source": "YouTube: Gate Smashers L-5.1 Memory Management and Degree of Multiprogramming - Operating System"
+ },
+ "L-4.6_GATE_2018_Question_on_Banker_s_Algorithm__Deadlock_avoidance__Operating_System.txt": {
+  "topic": "Deadlocks",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "GATE 2018 Question on Banker s Algorithm - Deadlock avoidance - Operating System",
+  "source": "YouTube: Gate Smashers L-4.6 GATE 2018 Question on Banker s Algorithm - Deadlock avoidance - Operating System"
+ },
+ "L-5.2_Memory_management__Techniques__Contiguous_and_non-Contiguous__Operating_System.txt": {
+  "topic": "Memory Management",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Memory management - Techniques - Contiguous and non-Contiguous - Operating System",
+  "source": "YouTube: Gate Smashers L-5.2 Memory management - Techniques - Contiguous and non-Contiguous - Operating System"
+ },
+ "L-4.4_Deadlock_Handling_Methods_and_Deadlock_Prevention__Operating_System.txt": {
+  "topic": "Deadlocks",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Deadlock Handling Methods and Deadlock Prevention - Operating System",
+  "source": "YouTube: Gate Smashers L-4.4 Deadlock Handling Methods and Deadlock Prevention - Operating System"
+ },
+ "L-5.3_Internal_Fragmentation__Fixed__size_Partitioning__Memory_management__Operating_System.txt": {
+  "topic": "Memory Management",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Internal Fragmentation - Fixed - size Partitioning - Memory management - Operating System",
+  "source": "YouTube: Gate Smashers L-5.3 Internal Fragmentation - Fixed - size Partitioning - Memory management - Operating System"
+ },
+ "L-5.4_Variable_size_Partitioning___Memory_management__Operating_System.txt": {
+  "topic": "Memory Management",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "Variable size Partitioning -  Memory management - Operating System",
+  "source": "YouTube: Gate Smashers L-5.4 Variable size Partitioning -  Memory management - Operating System"
+ },
+ "L-4.8_GATE_2018_Question_Explaination_on_deadlock__Operating_system.txt": {
+  "topic": "Deadlocks",
+  "doc_type": "youtube",
+  "transcript": true,
+  "title": "GATE 2018 Question Explaination on deadlock - Operating system",
+  "source": "YouTube: Gate Smashers L-4.8 GATE 2018 Question Explaination on deadlock - Operating system"
+ }
+}
