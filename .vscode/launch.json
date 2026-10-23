@@ -1,0 +1,88 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Backend (FastAPI)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "app:app",
+        "--app-dir",
+        "src",
+        "--port",
+        "8003"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "RAG_PROVIDER": "ollama",
+        "PYTHONPATH": "${workspaceFolder}/src"
+      }
+    },
+    {
+      "name": "Frontend (Streamlit)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "streamlit",
+      "args": [
+        "run",
+        "src/streamlit_app.py",
+        "--server.port",
+        "8503",
+        "--server.headless",
+        "true"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      }
+    },
+    {
+      "name": "Build search index",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/ingest.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      }
+    },
+    {
+      "name": "Smoke test (search accuracy)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/tests/smoke_test.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      }
+    },
+    {
+      "name": "Evaluate (held-out questions)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/dataset/eval_rag.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Run OSTutor (backend + UI)",
+      "configurations": [
+        "Backend (FastAPI)",
+        "Frontend (Streamlit)"
+      ],
+      "stopAll": true
+    }
+  ]
+}
