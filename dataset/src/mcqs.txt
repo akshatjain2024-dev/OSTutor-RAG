@@ -1,0 +1,648 @@
+# Concept MCQs. Format: "## Topic", then Q:, four options ("*" marks the correct one, "-" the others), E: explanation.
+
+## OS Basics
+Q: Which of these instructions should be privileged?
+- Reading the system clock
+* Turning off interrupts
+- Adding two registers
+- Calling a library function
+E: Disabling interrupts could let a program take over the CPU, so only the kernel may do it.
+
+Q: A system call switches the CPU from:
+* User mode to kernel mode
+- Kernel mode to user mode
+- Real mode to protected mode
+- Supervisor mode to hypervisor mode
+E: A system call is a trap into the kernel, which sets the mode bit to kernel mode.
+
+Q: Which kernel design moves device drivers and file systems into user space?
+- Monolithic kernel
+* Microkernel
+- Layered kernel
+- Exokernel only
+E: A microkernel keeps only minimal services (IPC, scheduling, basic memory) in the kernel.
+
+Q: Which OS type must guarantee that deadlines are never missed?
+- Batch OS
+- Time-sharing OS
+* Hard real-time OS
+- Distributed OS
+E: Hard real-time systems fail if a deadline is missed, for example in airbag controllers.
+
+Q: The main purpose of multiprogramming is to:
+* Increase CPU utilization
+- Increase memory size
+- Reduce the number of users
+- Avoid using interrupts
+E: While one job waits for I/O, the CPU runs another job instead of sitting idle.
+
+## Process Management
+Q: Which state does a process enter after its I/O request completes?
+- Running
+* Ready
+- New
+- Terminated
+E: It must wait in the ready queue until the scheduler picks it again.
+
+Q: Which data structure does the kernel use to store information about each process?
+- Page table
+* Process Control Block
+- File descriptor table only
+- Interrupt vector
+E: The PCB holds the state, PID, program counter, registers, scheduling and memory info.
+
+Q: Which scheduler controls the degree of multiprogramming?
+* Long-term scheduler
+- Short-term scheduler
+- Dispatcher
+- Medium-term scheduler only for threads
+E: The long-term (job) scheduler decides how many processes are admitted into memory.
+
+Q: A process that has finished but whose parent has not called wait() is called:
+- Orphan
+* Zombie
+- Daemon
+- Blocked
+E: Its PCB entry stays in the process table until the parent reaps it.
+
+Q: Context switch time is:
+- Useful work for the new process
+* Pure overhead
+- Part of the process's burst time
+- Zero on modern hardware
+E: No user work is done while saving and loading process state.
+
+## Threads
+Q: Which of these is NOT shared between threads of the same process?
+- Code section
+- Heap
+- Open files
+* Stack
+E: Each thread has its own stack, registers and program counter.
+
+Q: Linux maps user threads to kernel threads using which model?
+- Many-to-one
+* One-to-one
+- Many-to-many
+- Two-level only
+E: Each Pthread in Linux is backed by its own kernel task.
+
+Q: In the many-to-one model, a blocking system call by one thread:
+- Blocks only that thread
+* Blocks the entire process
+- Is converted to non-blocking
+- Creates a new kernel thread
+E: There is only one kernel thread, so when it blocks, all user threads block.
+
+Q: Which function waits for a thread to finish?
+- pthread_exit()
+- pthread_create()
+* pthread_join()
+- pthread_wait()
+E: pthread_join() blocks the caller until the given thread terminates.
+
+Q: Running two threads on two different cores at the same time is:
+- Concurrency without parallelism
+* Parallelism
+- Multiprogramming
+- Context switching
+E: Parallelism means tasks literally execute simultaneously.
+
+## CPU Scheduling
+Q: Which algorithm suffers from the convoy effect?
+* FCFS
+- SJF
+- Round Robin
+- SRTF
+E: Short processes wait behind a long process that got the CPU first.
+
+Q: Which scheduling algorithm gives the minimum average waiting time?
+- FCFS
+* SJF
+- Round Robin
+- Priority
+E: Running shorter jobs first reduces the waiting of the most processes.
+
+Q: Round Robin with a very large time quantum behaves like:
+* FCFS
+- SJF
+- Priority
+- SRTF
+E: Every process finishes within its first quantum, in arrival order.
+
+Q: Aging is a technique to solve:
+- Deadlock
+* Starvation
+- Thrashing
+- Fragmentation
+E: Waiting processes gradually get higher priority, so they eventually run.
+
+Q: Waiting time of a process equals:
+- Completion time − arrival time
+* Turnaround time − burst time
+- Burst time − arrival time
+- Response time − burst time
+E: Turnaround minus the time actually spent running gives time spent waiting.
+
+Q: SRTF is the preemptive version of:
+- FCFS
+* SJF
+- Round Robin
+- Priority
+E: SRTF preempts when a new process has a shorter remaining time.
+
+Q: Which algorithm is designed specifically for time-sharing systems?
+- FCFS
+- SJF
+* Round Robin
+- Non-preemptive priority
+E: Each process gets a regular slice of CPU, giving good response time.
+
+## Process Synchronization
+Q: Which is NOT a requirement of a critical section solution?
+- Mutual exclusion
+- Progress
+- Bounded waiting
+* Preemption
+E: The three requirements are mutual exclusion, progress and bounded waiting.
+
+Q: In the bounded buffer problem, the semaphore empty is initialized to:
+- 0
+- 1
+* n (buffer size)
+- -1
+E: Initially all n slots are empty.
+
+Q: A semaphore whose value can only be 0 or 1 is called:
+* Binary semaphore
+- Counting semaphore
+- Spinlock
+- Monitor
+E: A binary semaphore behaves like a mutex lock.
+
+Q: Peterson's solution works for:
+* Two processes
+- Any number of processes
+- Only threads
+- Only on uniprocessors with interrupts disabled
+E: It uses turn and flag[2], designed for exactly two processes.
+
+Q: Busy waiting is a characteristic of:
+- Blocking semaphores
+* Spinlocks
+- Message passing
+- Monitors
+E: A spinlock loops continuously while waiting for the lock.
+
+Q: In a monitor, how many processes can be active inside at one time?
+* One
+- Two
+- Any number
+- Depends on condition variables
+E: Mutual exclusion inside the monitor is guaranteed by its construction.
+
+Q: Two threads incrementing a shared counter without synchronization can lead to:
+- Deadlock
+* A race condition
+- Thrashing
+- Starvation only
+E: The load-add-store steps interleave and an update can be lost.
+
+## Deadlocks
+Q: Which is NOT one of the four necessary conditions for deadlock?
+- Mutual exclusion
+- Hold and wait
+- Circular wait
+* Preemption
+E: The condition is NO preemption.
+
+Q: In the Banker's algorithm, Need equals:
+- Max + Allocation
+* Max − Allocation
+- Available − Allocation
+- Allocation − Max
+E: What a process may still request is its maximum minus what it already holds.
+
+Q: An unsafe state:
+- Is always a deadlock
+* May lead to a deadlock
+- Can never lead to a deadlock
+- Means a cycle exists
+E: Unsafe means the OS can't guarantee completion, but deadlock is not certain.
+
+Q: Ordering resource types and requesting them in increasing order prevents:
+- Mutual exclusion
+- Hold and wait
+- No preemption
+* Circular wait
+E: A cycle would require some process to request a lower-numbered resource.
+
+Q: The Banker's algorithm is an example of deadlock:
+- Prevention
+* Avoidance
+- Detection
+- Recovery
+E: It checks each request to keep the system in a safe state.
+
+Q: A cycle in a resource allocation graph where every resource has one instance means:
+* Deadlock exists
+- Deadlock may exist
+- No deadlock
+- The system is safe
+E: With single instances, a cycle is both necessary and sufficient for deadlock.
+
+## Memory Management
+Q: Paging eliminates:
+- Internal fragmentation
+* External fragmentation
+- Both fragmentations
+- Page faults
+E: Any free frame can hold any page, but the last page may still waste space.
+
+Q: With a 4 KB page size, the offset field needs:
+- 10 bits
+* 12 bits
+- 14 bits
+- 16 bits
+E: 4 KB = 4096 = 2^12 bytes.
+
+Q: The TLB is a:
+- Part of main memory
+* Small, fast associative cache of page-table entries
+- Disk area for swapping
+- Type of segment table
+E: It caches recent page-number to frame-number translations.
+
+Q: Which placement strategy leaves the largest leftover hole?
+- First fit
+- Best fit
+* Worst fit
+- Next fit
+E: Worst fit allocates from the largest hole.
+
+Q: Segmentation suffers from:
+* External fragmentation
+- No fragmentation
+- Only internal fragmentation
+- Belady's anomaly
+E: Segments are variable-size and need contiguous space.
+
+Q: Which register is added to every logical address in simple relocation?
+- Limit register
+* Base (relocation) register
+- Program counter
+- Stack pointer
+E: Physical address = base + logical address, checked against the limit.
+
+Q: The page table that has one entry per physical frame is:
+- Hierarchical page table
+- Hashed page table
+* Inverted page table
+- Two-level page table
+E: It reduces memory for page tables but makes lookups slower.
+
+## Virtual Memory
+Q: Belady's anomaly can occur with:
+* FIFO
+- LRU
+- Optimal
+- Any stack algorithm
+E: Only FIFO among these is not a stack algorithm.
+
+Q: Which algorithm needs future knowledge of references?
+- FIFO
+- LRU
+* Optimal
+- Second chance
+E: OPT replaces the page used farthest in the future.
+
+Q: Thrashing occurs when:
+- The CPU is too fast
+* Processes don't have enough frames and page constantly
+- There are too many free frames
+- The TLB hit ratio is 100%
+E: The system spends most of its time servicing page faults.
+
+Q: The dirty bit tells the OS:
+- The page was referenced recently
+* The page must be written back to disk before replacement
+- The page is invalid
+- The page belongs to the kernel
+E: An unmodified page can just be overwritten.
+
+Q: A page fault occurs when:
+- A page is in memory but in the TLB
+* A referenced page is not in memory
+- The page table is full
+- A process forks
+E: The valid-invalid bit marks the page as not present, causing a trap.
+
+Q: The working-set model is used to prevent:
+- Deadlock
+* Thrashing
+- Race conditions
+- Fragmentation
+E: Each process gets enough frames for its current working set.
+
+Q: Copy-on-write is mainly used to make which call efficient?
+* fork()
+- exec()
+- open()
+- wait()
+E: Pages are copied only when parent or child writes to them.
+
+## File Systems
+Q: In UNIX, the file name is stored in:
+- The inode
+* The directory entry
+- The superblock
+- The data block
+E: A directory entry maps a name to an inode number.
+
+Q: Which allocation method has the worst direct-access performance?
+- Contiguous
+* Linked
+- Indexed
+- Multilevel indexed
+E: To reach block k you must follow k pointers.
+
+Q: Deleting the original file breaks which kind of link?
+- Hard link
+* Symbolic link
+- Both
+- Neither
+E: A symbolic link stores a path; the hard link points to the inode, which survives.
+
+Q: The FAT file system is a variation of:
+- Contiguous allocation
+* Linked allocation
+- Indexed allocation
+- Hashed allocation
+E: FAT keeps the linked-list pointers in a table instead of inside blocks.
+
+Q: Which UNIX permission string corresponds to 640?
+- rwxr-----
+* rw-r-----
+- rw-rw----
+- r--r-----
+E: 6 = rw-, 4 = r--, 0 = ---.
+
+Q: How many direct pointers does a classic ext2/ext3 inode have?
+- 8
+- 10
+* 12
+- 16
+E: 12 direct, then single, double and triple indirect pointers.
+
+## Disk Scheduling
+Q: Which disk scheduling algorithm is known as the elevator algorithm?
+- SSTF
+* SCAN
+- FCFS
+- C-LOOK
+E: The head sweeps up and down like an elevator.
+
+Q: Which disk algorithm can starve requests far from the head?
+* SSTF
+- FCFS
+- C-SCAN
+- SCAN
+E: Nearby new requests keep getting priority.
+
+Q: LOOK differs from SCAN because it:
+- Serves requests randomly
+* Turns around at the last request instead of the disk end
+- Only moves in one direction
+- Uses priorities
+E: It doesn't travel to the physical end when no requests are there.
+
+Q: RAID 0 provides:
+* Striping with no redundancy
+- Mirroring
+- Striping with parity
+- Hot spare only
+E: RAID 0 improves speed but one disk failure loses data.
+
+Q: Which component usually dominates disk access time?
+* Seek time
+- Transfer time
+- Controller overhead
+- Rotational speed of the CPU
+E: Moving the arm is the slowest mechanical action.
+
+## I/O Systems
+Q: DMA reduces CPU overhead by:
+* Letting the controller transfer whole blocks directly to memory
+- Making the CPU poll faster
+- Removing interrupts entirely
+- Caching all files
+E: The CPU is interrupted only once per block instead of once per byte.
+
+Q: Printing jobs held on disk until the printer is free is called:
+- Caching
+- Buffering
+* Spooling
+- Swapping
+E: Spooling queues output for a device that can serve one job at a time.
+
+Q: A keyboard is an example of a:
+- Block device
+* Character device
+- Network device
+- Storage device
+E: It produces a stream of characters, not addressable blocks.
+
+## System Calls
+Q: fork() returns 0 to:
+- The parent
+* The child
+- Both
+- Neither
+E: The parent gets the child's PID; the child gets 0.
+
+Q: How many processes exist after three fork() calls in sequence (no conditions)?
+- 3
+- 6
+* 8
+- 4
+E: Each fork doubles the count: 2^3 = 8.
+
+Q: After a successful exec(), the PID of the process:
+* Stays the same
+- Changes to a new PID
+- Becomes the parent's PID
+- Becomes 1
+E: exec replaces the program, not the process.
+
+Q: open() returns:
+- The highest unused file descriptor
+* The lowest unused file descriptor
+- Always 3
+- The inode number
+E: This rule is what makes close(1); open(file) redirect stdout.
+
+Q: Which call lets a parent check a child's status without blocking?
+- wait()
+* waitpid() with WNOHANG
+- exit()
+- kill()
+E: WNOHANG makes waitpid return immediately if the child hasn't finished.
+
+Q: read() returning 0 means:
+- An error occurred
+* End of file
+- The file is empty and locked
+- Permission denied
+E: Errors return -1; 0 means no more data.
+
+## Inter-Process Communication
+Q: In pipe(fd), fd[1] is:
+- The read end
+* The write end
+- The error stream
+- A duplicate of stdin
+E: fd[0] reads, fd[1] writes.
+
+Q: Which IPC mechanism lets unrelated processes communicate through a name in the file system?
+- Ordinary pipe
+* Named pipe (FIFO)
+- Signal
+- Thread
+E: mkfifo creates a FIFO that any process with permission can open.
+
+Q: Which signal cannot be caught or ignored?
+- SIGINT
+- SIGTERM
+* SIGKILL
+- SIGCHLD
+E: SIGKILL (and SIGSTOP) always take effect.
+
+Q: Which System V call attaches a shared memory segment to a process?
+- shmget()
+* shmat()
+- shmdt()
+- shmctl()
+E: shmget creates it, shmat attaches, shmdt detaches, shmctl controls.
+
+Q: Which IPC model needs a system call for every data exchange?
+- Shared memory
+* Message passing
+- Both
+- Neither
+E: Each send and receive goes through the kernel.
+
+## Linux Commands
+Q: chmod 755 file gives:
+* rwxr-xr-x
+- rwxrwxr-x
+- rw-r--r--
+- rwx------
+E: 7 = rwx, 5 = r-x.
+
+Q: Which command shows processes live with CPU usage?
+- ps
+* top
+- ls
+- jobs
+E: top refreshes continuously.
+
+Q: Which grep option prints lines that do NOT match?
+- -i
+- -n
+* -v
+- -c
+E: -v inverts the match.
+
+Q: The command ls -l | wc -l does what?
+- Lists files in long format
+* Counts the lines of the long listing
+- Counts words in all files
+- Shows hidden files
+E: The pipe sends the listing into wc, which counts lines.
+
+Q: Which redirection appends to a file?
+- >
+* >>
+- <
+- 2>
+E: >> appends; > overwrites.
+
+Q: kill -9 sends which signal?
+- SIGTERM
+* SIGKILL
+- SIGINT
+- SIGHUP
+E: Signal number 9 is SIGKILL.
+
+## Shell Programming
+Q: Which variable holds the exit status of the last command?
+- $#
+* $?
+- $$
+- $0
+E: 0 means success.
+
+Q: Which variable holds the number of arguments passed to a script?
+* $#
+- $@
+- $1
+- $?
+E: $@ holds the arguments themselves.
+
+Q: Which operator checks numeric greater-than in [ ]?
+- >
+* -gt
+- -ge
+- gt
+E: Inside [ ], > is a redirection; use -gt.
+
+Q: Which is the correct variable assignment in bash?
+- x = 10
+* x=10
+- $x=10
+- set x 10
+E: There must be no spaces around =.
+
+Q: How do you end a case statement in bash?
+- end
+- done
+* esac
+- fi
+E: case ... esac, like if ... fi.
+
+## Protection and Security
+Q: Lists attached to each object showing who can access it are called:
+* Access control lists
+- Capability lists
+- Page tables
+- Domain tables
+E: Capability lists are attached to domains (subjects) instead.
+
+Q: Giving a process only the rights it needs follows the principle of:
+- Defence in depth
+* Least privilege
+- Separation of duty
+- Open design
+E: It limits the damage a compromised program can do.
+
+Q: A program that does something useful but secretly misuses the user's privileges is a:
+* Trojan horse
+- Worm
+- Trap door
+- Buffer
+E: It hides malicious behaviour inside a seemingly legitimate program.
+
+## Virtualization
+Q: VirtualBox running on Windows is an example of:
+- Type 1 hypervisor
+* Type 2 hypervisor
+- Container runtime
+- Microkernel
+E: It runs as an application on a host OS.
+
+Q: Containers isolate processes mainly using:
+* Namespaces and cgroups
+- Separate kernels
+- Paravirtualization
+- Hardware rings only
+E: They share the host kernel; namespaces isolate views and cgroups limit resources.

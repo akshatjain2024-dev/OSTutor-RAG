@@ -1,0 +1,810 @@
+# Teacher-style explanations: the "voice" we want the fine-tuned model to learn.
+# Pattern: one-line answer -> step-by-step explanation -> example/analogy -> "Exam tip" line.
+# Format: "## Topic", then "### <student instruction>" followed by the answer.
+
+## OS Basics
+### Explain the difference between user mode and kernel mode.
+**In short:** kernel mode can do anything with the hardware; user mode can't, and has to ask the kernel.
+
+The CPU has a mode bit. When it says kernel mode, every instruction is allowed, including dangerous ones like disabling interrupts, talking to I/O devices or changing page tables. When it says user mode, those privileged instructions are blocked.
+
+Your programs (a browser, a C program you wrote) run in user mode. When your program wants to read a file, it can't touch the disk itself. It makes a system call, which causes a trap: the CPU switches to kernel mode, jumps into the kernel's code, the kernel does the work, and then switches back to user mode before returning to your program.
+
+Think of a bank: customers (user mode) can't walk into the vault. They fill a form at the counter (system call) and the staff (kernel) go into the vault for them.
+
+Why bother? If any program could run privileged instructions, one buggy program could crash the whole machine or read other users' data.
+
+**Exam tip:** mention the mode bit, privileged instructions, and that a system call or interrupt is the only way into kernel mode.
+
+### Why does an operating system need interrupts?
+**In short:** interrupts let devices get the CPU's attention when something happens, so the CPU doesn't have to keep checking.
+
+Without interrupts the CPU would have to poll: keep asking the keyboard "any key yet?" millions of times, wasting time. With interrupts, the CPU starts an operation and goes back to useful work. When the device finishes, it sends an interrupt signal.
+
+What happens then:
+1. The CPU finishes its current instruction and saves where it was (program counter and registers).
+2. It looks up the interrupt number in the interrupt vector, a table of addresses of interrupt service routines.
+3. It runs the right handler, for example "copy the key that was pressed into a buffer".
+4. It restores the saved state and continues the interrupted program.
+
+A trap is the software version: caused by an error (like division by zero) or deliberately by a system call.
+
+Analogy: instead of checking your phone every minute for a message (polling), you let it ring (interrupt).
+
+**Exam tip:** interrupts are hardware-generated and asynchronous; traps are software-generated and synchronous.
+
+## Process Management
+### Explain the process state diagram.
+**In short:** a process moves between five states: New, Ready, Running, Waiting and Terminated.
+
+1. **New:** the process is being created (PCB being set up).
+2. **Ready:** it is in memory and could run, but is waiting for the CPU in the ready queue.
+3. **Running:** the scheduler dispatched it and its instructions are executing. On one core only one process is running at a time.
+4. **Waiting (Blocked):** it asked for something that takes time, like disk I/O or a key press, so it can't use the CPU until that event happens.
+5. **Terminated:** it has finished.
+
+The arrows that matter:
+- Ready → Running: scheduler dispatch.
+- Running → Ready: interrupted, for example its time slice ended (only in preemptive systems).
+- Running → Waiting: it requested I/O or waits for an event.
+- Waiting → Ready: the I/O finished. Note it goes to Ready, not straight to Running.
+- Running → Terminated: exit().
+
+Analogy: a queue at a single ATM. Ready is standing in line, Running is using the machine, Waiting is stepping aside to find your card, then rejoining the line.
+
+**Exam tip:** draw the diagram and label every arrow with its cause; examiners look for the Waiting → Ready arrow.
+
+### What is a context switch and why is it overhead?
+**In short:** a context switch is when the CPU saves one process's state and loads another's; it's overhead because no useful work happens during it.
+
+Each process's "context" is its CPU registers, program counter, stack pointer and memory-management info, all kept in its PCB. To switch from P1 to P2 the kernel:
+1. saves P1's registers and program counter into PCB1,
+2. picks P2 (scheduler),
+3. loads P2's saved values from PCB2 and switches the memory mappings,
+4. jumps to where P2 left off.
+
+During those microseconds neither P1 nor P2 makes progress. Worse, after the switch the CPU caches and TLB are full of P1's data, so P2 runs slowly for a while.
+
+That's why Round Robin with a tiny time quantum is bad: if the quantum is close to the context-switch time, the CPU spends a big fraction of its time just switching.
+
+**Exam tip:** say "pure overhead", list what is saved (PC, registers, memory info in the PCB), and link it to quantum size in RR.
+
+## Threads
+### What is the difference between a process and a thread?
+**In short:** a process is a program with its own memory; a thread is a path of execution inside a process that shares that memory.
+
+A process owns resources: its address space (code, data, heap), open files, and so on. A thread is just the "worker" part: a program counter, registers and a stack.
+
+One process can have many threads. They all share the same code, global variables, heap and open files, but each has its own stack and registers so they can be at different points in the code.
+
+Consequences:
+- Creating a thread is much cheaper than creating a process (no new address space).
+- Switching between threads of the same process is faster.
+- Threads communicate easily through shared variables, but that's exactly why they need synchronization (mutexes) to avoid race conditions.
+- If one thread crashes the whole process, all threads die; separate processes are better isolated.
+
+Analogy: a process is a kitchen; threads are cooks working in the same kitchen, sharing the fridge and stove but each with their own recipe step in hand.
+
+**Exam tip:** list what is shared (code, data, heap, files) vs private (stack, registers, PC, thread ID).
+
+## CPU Scheduling
+### Explain Round Robin scheduling with an example.
+**In short:** every process gets the CPU for a fixed time quantum in turn; if it isn't finished, it goes to the back of the queue.
+
+Rules:
+1. The ready queue is FIFO.
+2. The scheduler gives the first process at most q time units.
+3. If it finishes earlier, the next process starts immediately. If not, it's preempted and goes to the tail of the queue.
+
+Example: P1 = 24, P2 = 3, P3 = 3, all arriving at 0, q = 4.
+Gantt: 0 [P1] 4 [P2] 7 [P3] 10 [P1] 14 [P1] 18 [P1] 22 [P1] 26 [P1] 30.
+Waiting times: P1 = 30 − 24 = 6, P2 = 4, P3 = 7. Average = 17/3 ≈ 5.67.
+Compare FCFS in the same order: average 17. RR is much fairer to the short jobs.
+
+Choosing q:
+- Too large → RR becomes FCFS.
+- Too small → too many context switches.
+- Rule of thumb: about 80% of CPU bursts should finish within one quantum.
+
+**Exam tip:** in numericals, state your convention when a new process arrives at the same time a quantum ends (usually the new arrival enters the queue first).
+
+### Why is SJF optimal but not practical?
+**In short:** running the shortest job first minimizes average waiting time, but the OS can't know how long the next CPU burst will be.
+
+Why it's optimal: if a short job runs before a long one, the short job's waiting drops a lot and the long job's waiting rises only a little. Swapping any long-before-short pair always reduces the total, so shortest-first gives the minimum average waiting time.
+
+Example: bursts 6, 8, 7, 3 at time 0. SJF order is 3, 6, 7, 8 and waiting times are 0, 3, 9, 16, so the average is 7. FCFS in the given order gives (0 + 6 + 14 + 21)/4 = 10.25.
+
+Why it's not practical: the scheduler needs the length of the next burst. It can only guess, using exponential averaging: τ(next) = α × (last actual burst) + (1 − α) × (last prediction).
+
+Also, long processes can starve if short ones keep arriving.
+
+**Exam tip:** say "provably optimal for average waiting time", mention burst prediction and starvation.
+
+## Process Synchronization
+### Explain a race condition with an example.
+**In short:** a race condition happens when the result depends on the exact timing of two processes accessing shared data.
+
+Take a shared variable count = 5, with one thread doing count++ and another doing count−−. Each line looks like one step, but in machine code it's three: load count into a register, add or subtract 1, store it back.
+
+A bad interleaving:
+1. T1 loads 5 into its register.
+2. T2 loads 5 into its register.
+3. T1 adds 1 → 6.
+4. T2 subtracts 1 → 4.
+5. T1 stores 6.
+6. T2 stores 4.
+Final count is 4, but it should be 5. One update was lost.
+
+It doesn't happen every time, which makes it a nasty, hard-to-reproduce bug.
+
+The fix is to make the read-modify-write a critical section that only one thread can be inside at a time, using a mutex, semaphore or atomic instruction.
+
+**Exam tip:** always show the load/modify/store breakdown; that's the core of the answer.
+
+### Explain the producer-consumer problem using semaphores.
+**In short:** use three semaphores: mutex for exclusive buffer access, empty to count free slots, and full to count filled slots.
+
+Setup: a buffer of n slots; mutex = 1, empty = n, full = 0.
+
+Producer:
+```
+while (true) {
+    produce item;
+    wait(empty);     // wait for a free slot
+    wait(mutex);     // enter critical section
+    add item to buffer;
+    signal(mutex);
+    signal(full);    // one more filled slot
+}
+```
+Consumer:
+```
+while (true) {
+    wait(full);      // wait for a filled slot
+    wait(mutex);
+    remove item from buffer;
+    signal(mutex);
+    signal(empty);   // one more free slot
+    consume item;
+}
+```
+Why it works: the producer blocks on empty when the buffer is full; the consumer blocks on full when it's empty; mutex stops both editing the buffer at the same instant.
+
+Careful with order: if the producer did wait(mutex) before wait(empty) on a full buffer, it would sleep while holding the mutex, and the consumer could never get in. Deadlock.
+
+**Exam tip:** state the initial values and explain why wait(empty)/wait(full) must come before wait(mutex).
+
+### What is the difference between a semaphore and a mutex?
+**In short:** a mutex is a lock with an owner for one-at-a-time access; a semaphore is a counter that can allow several at a time and can be signalled by anyone.
+
+Mutex: two states, locked and unlocked. The thread that locks it must unlock it. Use it to protect a critical section.
+
+Semaphore: an integer with atomic wait() and signal().
+- A counting semaphore initialized to k allows up to k processes in, which is useful for k identical resources like printers or connection slots.
+- A binary semaphore (0 or 1) can be used like a mutex, but there's no ownership; one process can wait and another can signal. That makes semaphores good for signalling between processes, like "data is ready".
+
+Analogy: a mutex is the single key to a bathroom; whoever takes it returns it. A semaphore is the number of free tables shown on a restaurant board.
+
+**Exam tip:** mention ownership, counting vs binary, and one use case for each.
+
+## Deadlocks
+### Explain the four necessary conditions for deadlock with an example.
+**In short:** deadlock can only happen if mutual exclusion, hold and wait, no preemption and circular wait are all true at once.
+
+Example: P1 holds the printer and wants the scanner; P2 holds the scanner and wants the printer.
+1. **Mutual exclusion:** the printer and scanner can be used by only one process at a time.
+2. **Hold and wait:** P1 holds the printer while waiting for the scanner (and P2 likewise).
+3. **No preemption:** the OS won't snatch the printer from P1; P1 must release it voluntarily.
+4. **Circular wait:** P1 waits for P2, and P2 waits for P1, a cycle.
+
+All four hold, so neither ever proceeds. Break any one and deadlock is impossible, which is the idea of deadlock prevention, for example forcing everyone to request the printer before the scanner (fixed ordering) breaks circular wait.
+
+Analogy: two cars meeting on a one-lane bridge from opposite ends, neither willing to reverse.
+
+**Exam tip:** these conditions are necessary, not sufficient, unless every resource has a single instance.
+
+### Explain the Banker's algorithm step by step.
+**In short:** before granting a request, the OS pretends to grant it and checks whether all processes could still finish in some order; if yes, it grants it.
+
+Data: Available (free instances), Max (each process's maximum claim), Allocation (what it holds now) and Need = Max − Allocation.
+
+Safety algorithm:
+1. Work = Available; mark all processes unfinished.
+2. Find an unfinished process whose Need ≤ Work (for every resource type).
+3. Pretend it runs to completion and releases everything: Work = Work + its Allocation; mark it finished.
+4. Repeat from step 2.
+5. If every process finishes, the state is safe, and the order you found is a safe sequence. If you get stuck, it's unsafe.
+
+Resource-request algorithm for process Pi asking for Request:
+1. If Request > Need, it's an error (asking for more than it declared).
+2. If Request > Available, Pi must wait.
+3. Otherwise pretend to allocate: Available −= Request, Allocation += Request, Need −= Request, then run the safety algorithm. Safe → grant. Unsafe → roll back and make Pi wait.
+
+Analogy: a bank only lends money if it can still guarantee that every customer could eventually be paid in full.
+
+**Exam tip:** always write the Need matrix first and show the Work vector after each process finishes.
+
+## Memory Management
+### Explain paging with an example.
+**In short:** paging splits memory into fixed-size frames and processes into same-size pages, and a page table maps each page to any free frame.
+
+1. Physical memory is divided into frames of, say, 4 KB.
+2. A process's logical memory is divided into pages of the same size.
+3. Pages can go into any free frames; they don't need to be next to each other.
+4. The CPU produces a logical address. Hardware splits it into a page number p and an offset d.
+5. The page table gives the frame f for page p. Physical address = f × page size + d.
+
+Example: page size 1024 bytes, page table: page 0 → frame 5, page 1 → frame 2. Logical address 1500: p = 1500 / 1024 = 1, d = 1500 mod 1024 = 476. Page 1 is in frame 2, so physical = 2 × 1024 + 476 = 2524.
+
+Benefits: no external fragmentation, since any free frame works. Cost: a page table per process, an extra memory access per reference (fixed with a TLB), and a little internal fragmentation in the last page.
+
+**Exam tip:** show the address split into p and d and do one translation.
+
+### Internal vs external fragmentation, explained simply.
+**In short:** internal fragmentation is wasted space inside an allocated block; external fragmentation is free space scattered in pieces too small to use.
+
+Internal: a process needs 18 KB but memory is handed out in 4 KB pages, so it gets 5 pages = 20 KB. The extra 2 KB inside its last page is wasted, and nobody else can use it.
+
+External: memory has free holes of 10 KB, 6 KB and 8 KB, 24 KB in total, but they're not next to each other. A process needing 20 KB contiguous memory can't be loaded even though enough memory is free.
+
+Which schemes cause which:
+- Fixed partitions and paging → internal.
+- Variable partitions and segmentation → external.
+Fixes: external fragmentation can be solved by compaction (shuffling processes together) or by paging; internal can be reduced with smaller pages, at the cost of bigger page tables.
+
+Analogy: internal is leaving empty seats in a bus you booked whole; external is a cinema with 20 single empty seats scattered around when your group of 5 wants to sit together.
+
+**Exam tip:** give one numeric example of each and name the fix.
+
+## Virtual Memory
+### What happens during a page fault?
+**In short:** the process touched a page that isn't in RAM, so the OS pauses it, loads the page from disk, fixes the page table and restarts the instruction.
+
+1. The CPU references an address; the page table entry's valid bit says "not in memory".
+2. The hardware traps to the OS: a page fault.
+3. The OS checks whether the reference was legal at all. If the address is invalid, the process is killed (segmentation fault).
+4. If legal, the OS finds a free frame, running a page replacement algorithm if none is free and writing the victim to disk if it is dirty.
+5. It schedules a disk read to bring the page into the frame. The process waits, and the CPU runs someone else meanwhile.
+6. When the read finishes, the OS updates the page table (frame number, valid bit = 1).
+7. The instruction that faulted is restarted, and now it succeeds.
+
+Why it matters: a memory access takes nanoseconds, a page fault milliseconds, about a million times slower. EAT = (1 − p) × memory time + p × fault time, so even p = 1/1000 makes memory roughly 40 times slower.
+
+**Exam tip:** number the steps and mention restarting the instruction.
+
+### Compare FIFO, LRU and Optimal page replacement.
+**In short:** FIFO evicts the oldest page, LRU the one unused for the longest time, and Optimal the one that won't be needed for the longest time.
+
+- **FIFO:** simple queue. It ignores how often a page is used, so it can evict a heavily used page. It can show Belady's anomaly: more frames, more faults.
+- **LRU:** looks backwards and assumes the recent past predicts the near future (locality). Usually close to optimal. Implementing exactly needs hardware support (counters or a stack), so real systems approximate it with reference bits (clock/second chance).
+- **Optimal:** looks forwards. Gives the fewest faults possible, but needs to know future references, so it's only a benchmark.
+
+On the textbook string 7 0 1 2 0 3 0 4 2 3 0 3 0 3 2 1 2 0 1 7 0 1 with 3 frames: FIFO = 15 faults, LRU = 12, OPT = 9.
+
+LRU and OPT are stack algorithms, so they never show Belady's anomaly.
+
+**Exam tip:** in numericals, draw the frame table column by column and mark hits clearly.
+
+### Explain thrashing.
+**In short:** thrashing is when processes spend more time swapping pages in and out than actually running.
+
+How it starts:
+1. Too many processes are in memory, so each gets too few frames.
+2. A process needs a page, faults, and steals a frame from someone else.
+3. That process soon needs its page back and faults too.
+4. Everyone is waiting on the disk; CPU utilization drops.
+5. The scheduler sees a low CPU load and admits even more processes, making things worse.
+
+The root cause is that a process's frames are fewer than its working set, the set of pages it is actively using (locality).
+
+Fixes:
+- Working-set model: track each process's working set over the last Δ references and only run a process if its whole working set fits; otherwise suspend some processes.
+- Page-fault frequency: if a process's fault rate is too high, give it more frames; if too low, take some away. If no frames are free, suspend a process.
+
+Analogy: a student with ten subjects and a desk that fits two books spends all their time swapping books from the shelf and never reads.
+
+**Exam tip:** mention the vicious cycle with the degree of multiprogramming and name both solutions.
+
+## File Systems
+### Compare contiguous, linked and indexed allocation.
+**In short:** contiguous stores a file in consecutive blocks, linked chains blocks with pointers, and indexed keeps all block addresses in one index block.
+
+- **Contiguous:** a directory entry stores start and length. Sequential and random access are both fast (block k = start + k). Problems: external fragmentation and it's hard to grow a file.
+- **Linked:** each block points to the next; the directory stores first and last block. No external fragmentation and files grow easily. Problems: random access is slow (follow k pointers to reach block k), pointer space is wasted in every block, and one bad pointer loses the rest of the file. FAT puts all pointers in a table to speed this up.
+- **Indexed:** each file has an index block listing all its block numbers. Random access is fast and there is no external fragmentation. Problems: the index block is overhead for tiny files, and big files need linked or multilevel indexes. UNIX inodes are a combined scheme: direct pointers plus single, double and triple indirect.
+
+**Exam tip:** make a table with access speed, fragmentation and growth for each method.
+
+## Disk Scheduling
+### Explain SCAN and C-SCAN disk scheduling.
+**In short:** SCAN sweeps the head back and forth like an elevator; C-SCAN sweeps in only one direction and jumps back to the start.
+
+SCAN: the head moves toward one end serving every request on its way, reaches the end of the disk, reverses and serves the requests on the way back.
+
+C-SCAN: the head moves toward the high end serving requests, reaches the end, then jumps straight back to cylinder 0 without serving anything, and starts sweeping up again.
+
+Why C-SCAN? With SCAN, right after the head passes a region, new requests there wait a long time while requests just behind the head get served soon. C-SCAN treats the disk like a circle, so waiting times are more uniform.
+
+Example: requests 98, 183, 37, 122, 14, 124, 65, 67, head at 53 moving toward 0. SCAN path: 53 → 37 → 14 → 0 → 65 → 67 → 98 → 122 → 124 → 183. Total = 53 + 183 = 236 cylinders.
+
+LOOK and C-LOOK do the same but only go as far as the last request, not the disk's physical end.
+
+**Exam tip:** always state the direction and whether you count the return jump in C-SCAN.
+
+## System Calls
+### Explain fork() with an example.
+**In short:** fork() creates a copy of the calling process; it returns 0 in the child and the child's PID in the parent.
+
+```c
+pid_t pid = fork();
+if (pid < 0)        printf("fork failed\n");
+else if (pid == 0)  printf("I am the child\n");
+else {              wait(NULL); printf("I am the parent of %d\n", pid); }
+```
+After fork() there are two processes running the same code from the next line. The only difference is the return value, which is how each knows who it is. The child gets copies of the parent's memory (shared via copy-on-write until someone writes), open files and variables.
+
+Counting: every fork doubles the number of processes that execute the following code, so n forks in a row give 2^n processes. That's why `fork(); fork(); fork(); printf("hi");` prints hi 8 times.
+
+wait(NULL) in the parent makes it wait for the child to finish, so the output order is predictable and the child doesn't become a zombie.
+
+**Exam tip:** for output-prediction questions, draw the process tree and write the return value of fork() at each node.
+
+### What does exec() do and why is it used with fork()?
+**In short:** exec() replaces the current program with a new one in the same process; fork() + exec() is how a new program is started.
+
+exec() loads a new program (like /bin/ls) into the current process: new code, data, heap and stack. The PID, open file descriptors and parent stay the same. If it works, it never returns, because the old code is gone. So any line after a successful exec() never runs.
+
+Why not just exec()? Because then the shell itself would be replaced by ls and disappear. Instead the shell:
+1. calls fork() to make a child,
+2. the child calls exec("ls"),
+3. the parent shell calls wait() until ls finishes, then shows the prompt again.
+
+Splitting creation (fork) from loading (exec) also lets the child set things up in between, like redirecting output with dup2() before exec. That's how `ls > out.txt` works.
+
+**Exam tip:** "exec doesn't create a process; it replaces the program." Mention that the PID is unchanged.
+
+## Inter-Process Communication
+### How do pipes work between a parent and child?
+**In short:** pipe() creates a one-way channel with a read end fd[0] and a write end fd[1]; after fork(), one process writes and the other reads.
+
+```c
+int fd[2]; pipe(fd);
+if (fork() == 0) {              // child: reader
+    close(fd[1]);
+    char buf[100]; int n = read(fd[0], buf, sizeof buf);
+    buf[n] = '\0'; printf("child got: %s\n", buf);
+    close(fd[0]);
+} else {                        // parent: writer
+    close(fd[0]);
+    write(fd[1], "hello", 5);
+    close(fd[1]); wait(NULL);
+}
+```
+Key points:
+1. pipe() must be called before fork(), so both processes inherit the same two file descriptors.
+2. Each side closes the end it doesn't use. This matters: the reader only sees end-of-file when every write end is closed. If the child forgot to close fd[1], its read could block forever.
+3. Pipes are one-way; for two-way communication use two pipes.
+4. Ordinary pipes need related processes. Unrelated processes use a named pipe (mkfifo).
+
+The shell does exactly this for `ls | wc -l`, connecting ls's stdout to wc's stdin with dup2.
+
+**Exam tip:** remember "0 is read, 1 is write", like stdin 0 and stdout 1.
+
+## Shell Programming
+### How do I write a shell script to check if a number is prime?
+**In short:** try dividing by every number from 2 up to √n; if any divides exactly, it's not prime.
+
+```bash
+#!/bin/bash
+read -p "Enter a number: " n
+if [ $n -lt 2 ]; then
+    echo "$n is not prime"; exit 0
+fi
+i=2
+while [ $((i * i)) -le $n ]; do
+    if [ $((n % i)) -eq 0 ]; then
+        echo "$n is not prime"; exit 0
+    fi
+    i=$((i + 1))
+done
+echo "$n is prime"
+```
+How it works:
+- read -p prints a prompt and stores the input in n.
+- Numbers below 2 aren't prime.
+- We only check divisors while i × i ≤ n, because if n = a × b, one of a or b must be ≤ √n.
+- $((n % i)) gives the remainder; if it's 0, i divides n.
+- -le and -eq are numeric comparisons inside [ ].
+
+Run it with chmod +x prime.sh then ./prime.sh.
+
+**Exam tip:** no spaces around = when assigning, but spaces are required inside [ ].
+
+## Linux Commands
+### Explain chmod with numbers.
+**In short:** each permission digit is the sum r = 4, w = 2, x = 1, for owner, group and others in that order.
+
+For chmod 754 file:
+- Owner = 7 = 4 + 2 + 1 = rwx
+- Group = 5 = 4 + 1 = r-x
+- Others = 4 = r--
+So ls -l shows -rwxr-xr--.
+
+Common ones:
+- 755: scripts and directories everyone can use but only you can change.
+- 644: normal files; you edit, others read.
+- 600: private files like SSH keys.
+- 777: everyone can do everything; almost never a good idea.
+
+Symbolic form does the same thing more readably: chmod u+x file adds execute for the owner, chmod go-w file removes write for group and others.
+
+For directories: r lets you list names, w lets you create or delete files inside, and x lets you enter it with cd.
+
+**Exam tip:** show the digit-to-rwx conversion; that's what the marks are for.
+
+## I/O Systems
+### Compare polling, interrupts and DMA.
+**In short:** with polling the CPU keeps checking the device; with interrupts the device tells the CPU when it's ready; with DMA a controller moves the whole block and interrupts once at the end.
+
+- **Polling:** the CPU loops reading the device's status register. Fine for very fast devices, but for slow ones it wastes huge amounts of CPU time.
+- **Interrupt-driven I/O:** the CPU starts the transfer and does other work; the device raises an interrupt when ready. Much better, but if every byte of a large disk transfer causes an interrupt, the overhead adds up.
+- **DMA:** the CPU gives the DMA controller the memory address, the device and the byte count. The controller copies the whole block directly between the device and memory and raises one interrupt at the end. The CPU is free nearly the whole time.
+
+Analogy: polling is calling the restaurant every two minutes to ask if your order is ready; an interrupt is them calling you; DMA is them delivering the whole order to your door and ringing once.
+
+**Exam tip:** DMA is used for block devices like disks and network cards.
+
+## Virtualization
+### What is the difference between a virtual machine and a container?
+**In short:** a VM runs a full guest operating system on virtual hardware; a container is an isolated group of processes sharing the host's kernel.
+
+Virtual machine: a hypervisor (VirtualBox, KVM, ESXi) gives each VM virtual CPUs, memory and disks. Inside, a complete OS boots, possibly a different one from the host (Windows inside Linux). Strong isolation, but heavy: gigabytes of disk, slow boot, a lot of memory.
+
+Container: Docker or LXC start ordinary Linux processes, but the kernel uses namespaces to give them their own view of PIDs, network, files and hostname, and cgroups to limit their CPU and memory. There's no guest kernel, so containers start in seconds and are small. Downsides: they must use the host's kernel type, and isolation is weaker.
+
+Analogy: VMs are separate houses on one plot of land, each with its own plumbing; containers are flats in one building sharing the plumbing but with locked doors.
+
+**Exam tip:** mention hypervisor types for VMs, and namespaces + cgroups for containers.
+
+## Threads
+### Explain user-level threads vs kernel-level threads.
+**In short:** user-level threads are managed by a library inside the process; kernel-level threads are managed and scheduled by the OS itself.
+
+User-level threads: the thread library keeps its own table of threads and switches between them without a system call. That makes creating and switching very fast. But the kernel only sees one process, so if one thread makes a blocking system call, the whole process blocks, and the threads can't run on two cores at once.
+
+Kernel-level threads: the kernel knows every thread, keeps a TCB for each and schedules them independently. One thread can block on I/O while the others keep running, and threads can run in parallel on different cores. The cost is that every create or switch goes through the kernel, which is slower.
+
+How they're connected is the multithreading model: many-to-one (all user threads on one kernel thread), one-to-one (Linux, Windows) and many-to-many.
+
+**Exam tip:** compare on speed of switching, blocking behaviour and multicore use.
+
+### How do I write a simple Pthreads program?
+**In short:** write a function for the thread to run, start it with pthread_create, and wait for it with pthread_join.
+
+```c
+#include <pthread.h>
+#include <stdio.h>
+
+void *work(void *arg) {
+    int id = *(int *)arg;
+    printf("Hello from thread %d\n", id);
+    return NULL;
+}
+
+int main(void) {
+    pthread_t t1, t2;
+    int a = 1, b = 2;
+    pthread_create(&t1, NULL, work, &a);
+    pthread_create(&t2, NULL, work, &b);
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+    printf("Both threads finished\n");
+    return 0;
+}
+```
+- The thread function must take a void * and return a void *; pass data through the argument.
+- The second argument of pthread_create is the attributes (NULL = defaults).
+- Without pthread_join, main might return and end the process before the threads print.
+- The two hello lines can appear in either order, because the scheduler decides.
+
+Compile with gcc threads.c -o threads -pthread.
+
+**Exam tip:** mention that output order between threads is not guaranteed.
+
+## Inter-Process Communication
+### Shared memory vs message passing — which is better?
+**In short:** shared memory is faster; message passing is simpler and safer, and works across machines.
+
+Shared memory: the processes ask the OS once to create a shared region (shmget, shmat) and then read and write it like normal memory. After setup there are no system calls, so it's the fastest IPC. The catch: the OS does nothing to coordinate them, so the processes must use semaphores or mutexes themselves to avoid race conditions.
+
+Message passing: processes call send() and receive(), and the kernel copies the message. Every message costs a system call and a copy, so it's slower, especially for big data. But there's nothing shared to corrupt, it's easier to get right, and it naturally extends to networks (sockets).
+
+When to use which: large data exchanged often between processes on one machine → shared memory. Small messages, or processes on different machines → message passing.
+
+Analogy: shared memory is a shared whiteboard in a room (fast, but you must take turns); message passing is posting letters (slower, but orderly).
+
+**Exam tip:** mention synchronization responsibility for shared memory and system-call overhead for message passing.
+
+## File Systems
+### Explain hard links and symbolic links.
+**In short:** a hard link is a second name for the same inode; a symbolic link is a small file that contains the path to another file.
+
+Every file is really an inode (the metadata and block pointers). A directory entry just maps a name to an inode number.
+
+Hard link (ln a.txt b.txt): adds another directory entry pointing to the same inode, and the inode's link count goes up to 2. Both names are equal; there's no "original". Deleting a.txt only removes one name; the data stays until the link count drops to 0. Limits: can't cross file systems and normally can't link directories.
+
+Symbolic link (ln -s a.txt s.txt): creates a new inode whose content is the path "a.txt". Opening s.txt makes the OS follow that path. If a.txt is deleted, s.txt becomes a dangling link. Symlinks can point to directories and across file systems.
+
+You can see the difference with ls -li: hard links show the same inode number; a symlink shows l in the permissions and an arrow to its target.
+
+**Exam tip:** "hard link = same inode, survives deletion; soft link = path, breaks on deletion".
+
+### Explain the different directory structures.
+**In short:** directories evolved from one flat list to trees and graphs so that users could organise and share files.
+
+1. **Single-level:** one directory for everyone. Simple, but all names must be unique and users clash.
+2. **Two-level:** each user gets their own directory under a master directory. Solves name clashes, but sharing files between users is awkward.
+3. **Tree-structured:** directories can contain subdirectories to any depth. Files are named by absolute paths (/home/akshat/os/notes.txt) or relative paths from the current directory. This is the usual structure.
+4. **Acyclic graph:** a file or directory can appear in more than one directory through links, which allows sharing. The OS must avoid cycles and handle deletion carefully (for example with link counts).
+5. **General graph:** cycles are allowed, which makes searching and deletion complicated (needs garbage collection or cycle checks).
+
+UNIX/Linux is a tree with hard and symbolic links, so in practice it's an acyclic graph (symlinks can create cycles, which tools handle by not following them blindly).
+
+**Exam tip:** give one advantage and one disadvantage per structure.
+
+## Linux Commands
+### Explain pipes and redirection in the Linux shell.
+**In short:** redirection connects a command's input or output to a file; a pipe connects one command's output to another command's input.
+
+Every process starts with three streams: stdin (0), stdout (1) and stderr (2).
+
+Redirection:
+- `ls > files.txt` sends output to a file, overwriting it.
+- `ls >> files.txt` appends instead.
+- `sort < names.txt` reads input from a file.
+- `gcc prog.c 2> errors.txt` saves only the error messages.
+- `cmd > all.txt 2>&1` sends both output and errors to the same file.
+
+Pipes:
+- `ps aux | grep bash` lists processes, then keeps only lines containing bash.
+- `cat log.txt | grep error | wc -l` counts lines that contain error.
+- `ls -S | head -5` shows the five largest files.
+
+Behind the scenes the shell uses the system calls you learn in lab: pipe() to create the channel, fork() for each command, and dup2() to attach the pipe ends to stdin and stdout before exec().
+
+**Exam tip:** in command questions, build the pipeline left to right and explain what each stage does.
+
+## Shell Programming
+### Explain loops in shell scripts with examples.
+**In short:** bash has for, while and until loops; for goes over a list, while repeats while a condition is true, until repeats until it becomes true.
+
+For over a list or range:
+```bash
+for i in 1 2 3 4 5; do echo $i; done
+for f in *.txt; do echo "File: $f"; done
+for ((i = 1; i <= 5; i++)); do echo $i; done
+```
+While, for example the sum of digits:
+```bash
+n=1234; sum=0
+while [ $n -gt 0 ]; do
+    sum=$((sum + n % 10))
+    n=$((n / 10))
+done
+echo "Sum of digits = $sum"
+```
+Until:
+```bash
+i=1
+until [ $i -gt 5 ]; do echo $i; i=$((i + 1)); done
+```
+break exits the loop and continue skips to the next round, as in C.
+
+Common mistakes: forgetting spaces inside [ ], using > instead of -gt for numbers, and forgetting to change the loop variable (infinite loop).
+
+**Exam tip:** the sum-of-digits and reverse-a-number loops (n % 10 and n / 10) come up in almost every lab exam.
+
+## Protection and Security
+### Explain the access matrix and how it is implemented.
+**In short:** the access matrix lists, for every domain (user or process) and every object (file, device), which operations are allowed; real systems store it as ACLs or capability lists.
+
+Picture a table: rows are domains D1, D2, D3; columns are objects F1, F2, printer. The cell (D1, F1) might say read, write, meaning a process in domain D1 may read and write F1. An empty cell means no access.
+
+The full table is huge and mostly empty, so it's stored in pieces:
+- **Access control list (ACL):** store each column with its object. File F1 keeps a list like {D1: rw, D2: r}. Checking access means looking up the user in the file's list. Easy to answer "who can use this file?" and to revoke rights. UNIX rwx for owner/group/others is a compressed ACL.
+- **Capability list:** store each row with its domain. A process carries a list of tokens like (F1, read). Having the token is the permission. Easy to answer "what can this process do?", but revoking a capability that has been handed out is hard.
+
+Most systems combine them: check the ACL when a file is opened, then give the process a capability (the file descriptor) for later reads and writes.
+
+**Exam tip:** draw a small 3×3 matrix and show one column as an ACL and one row as a capability list.
+
+### What is a buffer overflow attack and how is it prevented?
+**In short:** a program writes more data into a buffer than it can hold, overwriting nearby memory such as the return address, so an attacker can make it run their code.
+
+```c
+void greet(char *name) {
+    char buf[16];
+    strcpy(buf, name);     // no length check
+}
+```
+If name is longer than 16 bytes, strcpy keeps writing past buf into the rest of the stack frame, including the saved return address. An attacker sends input that contains their own machine code and overwrites the return address to point at it. When greet returns, the CPU jumps into the attacker's code, with the program's privileges. That's very dangerous for setuid or network programs.
+
+Defences:
+- Use bounded functions (strncpy, snprintf, fgets) and check lengths.
+- Stack canaries: a random value placed before the return address and checked before returning.
+- Non-executable stack (NX bit): code on the stack can't run.
+- ASLR: randomizes addresses so the attacker can't predict where to jump.
+
+**Exam tip:** mention the return address and at least two defences.
+
+## I/O Systems
+### What is the difference between buffering, caching and spooling?
+**In short:** a buffer holds data in transit, a cache keeps a fast copy of data, and spooling queues jobs for a device that can do only one at a time.
+
+- **Buffering:** temporary memory used while data moves between a device and a program, to handle speed or size differences. Example: network packets arrive in small pieces and are collected in a buffer until a full block can be written to disk. Double buffering: the device fills one buffer while the program processes the other. A buffer may hold the only copy of the data.
+- **Caching:** keeping a copy of frequently used data in faster storage, like disk blocks kept in RAM (the page cache). The original is still on disk; the cache just makes repeated access faster.
+- **Spooling:** for devices that can't interleave jobs, like printers. Each process's output goes to a separate file on disk, and a spooler daemon sends them to the printer one by one. Programs don't wait for the printer, and pages from different jobs don't mix.
+
+A single memory region can be both a buffer and a cache, for example a disk block that was just read.
+
+**Exam tip:** the key difference between a buffer and a cache is "only copy" vs "copy of something stored elsewhere".
+
+## Virtualization
+### Explain type 1 and type 2 hypervisors.
+**In short:** a type 1 hypervisor runs directly on the hardware; a type 2 hypervisor runs as an application on top of a normal operating system.
+
+Type 1 (bare-metal): the hypervisor is the first thing that boots. It controls the CPU, memory and devices and gives slices of them to each virtual machine. Examples: VMware ESXi, Xen, Microsoft Hyper-V, and Linux KVM (the Linux kernel itself acts as the hypervisor). Low overhead and strong isolation, so they run cloud servers.
+
+Type 2 (hosted): you install it like any app on Windows, macOS or Linux. Examples: VirtualBox, VMware Workstation. The guest's requests go through the hypervisor and then through the host OS, so there's more overhead, but it's easy to set up, which is why students use it for running Linux on a Windows laptop.
+
+Both rely on hardware support (Intel VT-x, AMD-V) to run guest code efficiently.
+
+**Exam tip:** give two examples of each and say where each is used (data centre vs desktop).
+
+## Disk Scheduling
+### Compare all the disk scheduling algorithms.
+**In short:** they all try to cut down head movement; they differ in fairness and how far the head travels.
+
+- **FCFS:** serves requests in arrival order. Fair, but the head may zig-zag across the disk.
+- **SSTF:** always goes to the closest request. Much less movement, but distant requests can starve.
+- **SCAN (elevator):** sweeps to one end of the disk serving requests, then reverses. No starvation; requests at the ends wait longer.
+- **C-SCAN:** sweeps in one direction only, then jumps back to the start. More uniform waiting time than SCAN.
+- **LOOK / C-LOOK:** like SCAN / C-SCAN but turn around at the last request instead of the disk edge, which saves needless travel.
+
+On the standard example (queue 98, 183, 37, 122, 14, 124, 65, 67; head 53): FCFS 640 cylinders, SSTF 236, SCAN toward 0 236.
+
+Which to choose: SSTF or LOOK for light loads; SCAN or C-SCAN for heavy loads where fairness matters. For SSDs there's no seek time, so simple FCFS is usually fine.
+
+**Exam tip:** in numericals, always write the head path before adding up the distances.
+
+## Process Management
+### What are zombie and orphan processes?
+**In short:** a zombie has finished but its parent hasn't collected its exit status; an orphan is still running but its parent has already exited.
+
+Zombie: when a child calls exit(), the kernel frees its memory but keeps a small entry in the process table holding its PID and exit status, so the parent can read it with wait(). Until the parent calls wait(), the child is a zombie, shown as Z or <defunct> in ps. A few zombies are harmless, but a parent that never waits can fill the process table.
+
+Orphan: if the parent exits first, the child keeps running without a parent. Linux re-parents it to init/systemd (PID 1), which regularly calls wait(), so orphans never stay zombies forever.
+
+How to avoid zombies:
+1. The parent calls wait() or waitpid() for each child.
+2. Handle SIGCHLD and call waitpid() in the handler.
+3. Ignore SIGCHLD (signal(SIGCHLD, SIG_IGN)) so the kernel reaps children automatically.
+
+**Exam tip:** "zombie = dead child, parent not waiting; orphan = live child, parent dead".
+
+## OS Basics
+### Explain the different structures of an operating system.
+**In short:** OS designs range from one big kernel (monolithic) to a tiny kernel with services outside it (microkernel), with layered, modular and hybrid designs in between.
+
+- **Monolithic:** the whole OS (scheduler, memory, file systems, drivers) runs in one address space in kernel mode. Very fast, because parts call each other directly, but a bug in a driver can crash everything. Example: traditional UNIX, Linux.
+- **Layered:** the OS is split into layers; each layer uses only the one below it (layer 0 is hardware, the top is the user interface). Easy to test and debug, but defining the layers is hard and calls pass through many layers, which is slow.
+- **Microkernel:** only the essentials (IPC, basic scheduling, low-level memory) stay in the kernel. File systems and drivers run as user-space servers that talk by messages. More reliable and secure; slower because of message passing. Examples: Mach, QNX, MINIX 3.
+- **Modular (loadable kernel modules):** a core kernel plus modules loaded at run time. Linux uses this to add drivers without rebooting.
+- **Hybrid:** combines ideas. Windows and macOS are hybrids.
+
+**Exam tip:** for each structure give one advantage, one disadvantage and one example OS.
+
+## Memory Management
+### How does the TLB speed up paging? Show the EAT calculation.
+**In short:** the TLB caches recent page-to-frame translations, so most memory references avoid an extra trip to the page table.
+
+Without a TLB, every memory reference needs two memory accesses: one to read the page table entry and one to get the data. That doubles memory access time.
+
+The TLB is a small, very fast associative memory inside the MMU. On each reference:
+- TLB hit: the frame number is found at once; only one memory access is needed.
+- TLB miss: read the page table in memory (one access), then the data (second access), and add the entry to the TLB.
+
+Example: memory access 100 ns, TLB lookup 20 ns, hit ratio 80%.
+- Hit time = 20 + 100 = 120 ns
+- Miss time = 20 + 100 + 100 = 220 ns
+- EAT = 0.8 × 120 + 0.2 × 220 = 96 + 44 = 140 ns
+With a 98% hit ratio: 0.98 × 120 + 0.02 × 220 = 122 ns, which is close to a single access. Locality is what makes hit ratios this high.
+
+**Exam tip:** write the hit and miss times separately before combining them.
+
+## Deadlocks
+### Compare deadlock prevention, avoidance and detection.
+**In short:** prevention makes deadlock structurally impossible, avoidance checks each request so the system stays safe, and detection lets deadlock happen and then fixes it.
+
+- **Prevention:** break one of the four conditions in the design. For example, request all resources at once (no hold and wait), or number resources and request them in order (no circular wait). Simple to reason about, but often wastes resources and lowers utilization.
+- **Avoidance:** processes declare their maximum needs in advance. Before every allocation the OS runs a safety check (Banker's algorithm) and grants the request only if the system stays in a safe state. Allows more concurrency than prevention, but needs advance knowledge of maximum needs and costs time on every request.
+- **Detection and recovery:** allocate freely; periodically check for deadlock (wait-for graph cycle or detection algorithm). If found, abort processes or preempt resources. Good when deadlocks are rare, but recovery can lose work.
+- **Ignore:** most desktop OSes just don't handle it.
+
+**Exam tip:** state who does the work and when: prevention at design time, avoidance at every request, detection periodically.
+
+## Process Synchronization
+### Explain the dining philosophers problem and a solution.
+**In short:** five philosophers share five chopsticks; each needs both neighbours' chopsticks to eat, and the naive solution can deadlock.
+
+Setup: philosophers sit in a circle with one chopstick between each pair. A philosopher thinks, gets hungry, picks up the left and right chopsticks, eats, then puts both down.
+
+Naive solution with one semaphore per chopstick:
+```
+wait(chopstick[i]);
+wait(chopstick[(i + 1) % 5]);
+eat();
+signal(chopstick[i]);
+signal(chopstick[(i + 1) % 5]);
+```
+If all five get hungry at once and each picks up their left chopstick, every right chopstick is taken. Everyone waits forever: deadlock (circular wait).
+
+Fixes:
+1. Allow at most four philosophers at the table at once (a counting semaphore initialized to 4).
+2. Pick up both chopsticks only if both are free, checked inside a critical section or a monitor.
+3. Asymmetric order: odd-numbered philosophers take left then right, even-numbered take right then left, which breaks the cycle.
+Also watch out for starvation: a philosopher whose neighbours keep eating alternately might never eat.
+
+**Exam tip:** show the naive code, explain how it deadlocks, then give one fix.
+
+## CPU Scheduling
+### Explain the multilevel feedback queue scheduler.
+**In short:** several ready queues with different priorities, where processes move down if they use a lot of CPU and up if they wait a long time.
+
+Example with three queues:
+- Q0: highest priority, Round Robin with q = 8.
+- Q1: Round Robin with q = 16.
+- Q2: lowest, FCFS.
+
+Rules:
+1. A new process enters Q0.
+2. If it uses its whole quantum without finishing, it is moved down one queue.
+3. If it blocks for I/O before the quantum ends, it stays at its level (it's probably interactive).
+4. A lower queue only runs when all higher queues are empty, and a new arrival in a higher queue preempts it.
+5. Aging: a process waiting too long in a low queue is moved up, which prevents starvation.
+
+Result: short, interactive jobs finish quickly in the top queues; long CPU-bound jobs sink to the bottom and run when the CPU is otherwise free.
+
+It's the most general scheduler, defined by the number of queues, the algorithm per queue, and the rules for moving up, moving down and choosing the entry queue.
+
+**Exam tip:** list those defining parameters; examiners often ask for them directly.
+
+### Explain Rate Monotonic and EDF scheduling.
+**In short:** Rate Monotonic gives fixed priority by period (shorter period = higher priority); EDF always runs the task whose deadline is nearest.
+
+Both are for periodic real-time tasks, each with a period p and a CPU time t per period (and deadline = end of the period).
+
+Rate Monotonic (RMS): priorities are fixed. A task that repeats every 50 ms beats one that repeats every 100 ms. It's preemptive and optimal among static-priority methods. It's guaranteed to meet all deadlines if total utilization Σ(t/p) ≤ n(2^(1/n) − 1): about 83% for 2 tasks, approaching 69% for many tasks. Above that bound it might still work, but there's no guarantee.
+
+Earliest Deadline First (EDF): priorities change at run time; whichever task has the closest deadline right now runs. It can schedule any task set with utilization up to 100% (ignoring overheads), so it's more efficient, but it is harder to implement and behaves badly when overloaded.
+
+Example: T1 (p = 50, t = 25), T2 (p = 80, t = 35). Utilization = 0.5 + 0.4375 = 0.94. That's above the RMS bound (0.83), and in fact RMS misses T2's first deadline at 80, but EDF meets all deadlines.
+
+**Exam tip:** state the utilization bound formula and when each method can be used.
+
+## Virtual Memory
+### What is Belady's anomaly? Show it with an example.
+**In short:** Belady's anomaly is when giving a process more frames causes more page faults; it can happen with FIFO.
+
+Reference string: 1 2 3 4 1 2 5 1 2 3 4 5.
+
+FIFO with 3 frames: faults on 1, 2, 3, 4 (replace 1), 1 (replace 2), 2 (replace 3), 5 (replace 4), then 1 and 2 hit, then 3 (replace 1), 4 (replace 2), and 5 hits. Total = 9 faults.
+
+FIFO with 4 frames: faults on 1, 2, 3, 4, then 1 and 2 hit, then 5 (replace 1), 1 (replace 2), 2 (replace 3), 3 (replace 4), 4 (replace 5), 5 (replace 1). Total = 10 faults.
+
+More memory, more faults. That's the anomaly.
+
+Why: FIFO evicts by age, not usage, so the set of pages in memory with 4 frames is not always a superset of the set with 3 frames. LRU and Optimal are stack algorithms (the n-frame set is always contained in the (n+1)-frame set), so they can never show the anomaly.
+
+**Exam tip:** memorise this reference string; it's the standard demonstration.

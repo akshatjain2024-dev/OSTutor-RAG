@@ -1,0 +1,232 @@
+# Exam question bank (university-style, written in the pattern of OS past papers).
+# Format:  topic | marks | type | question
+# type: theory, compare, numerical, code, diagram, application
+# Add your real previous-year questions here in the same format and re-run build_dataset.py.
+
+OS Basics | 2 | theory | Define an operating system. List its two main roles.
+OS Basics | 2 | theory | What is the purpose of the mode bit?
+OS Basics | 5 | compare | Differentiate between kernel mode and user mode with examples of operations allowed in each.
+OS Basics | 5 | compare | Compare monolithic kernels and microkernels. Give one example of each.
+OS Basics | 5 | theory | Explain multiprogramming and time-sharing. How does time-sharing improve user experience?
+OS Basics | 4 | compare | Differentiate between hard real-time and soft real-time systems with examples.
+OS Basics | 5 | theory | What is an interrupt? Explain how the CPU handles an interrupt using the interrupt vector.
+OS Basics | 3 | compare | Differentiate between an interrupt and a trap.
+OS Basics | 5 | theory | Describe the steps in booting a computer, from firmware to the first user process.
+OS Basics | 4 | theory | What is a loadable kernel module? Why does Linux support them?
+OS Basics | 5 | compare | Compare symmetric and asymmetric multiprocessing.
+OS Basics | 3 | theory | What is DMA and why is it needed?
+
+Process Management | 2 | theory | Differentiate between a program and a process.
+Process Management | 5 | diagram | Draw and explain the process state transition diagram.
+Process Management | 4 | theory | What information is stored in a Process Control Block?
+Process Management | 4 | theory | What is a context switch? Why is it considered overhead?
+Process Management | 6 | compare | Compare the long-term, short-term and medium-term schedulers.
+Process Management | 3 | theory | What is a zombie process? How can it be avoided?
+Process Management | 3 | theory | What is an orphan process? What happens to it in Linux?
+Process Management | 4 | diagram | Draw the memory layout of a process and explain each section.
+Process Management | 3 | theory | What is meant by the degree of multiprogramming? Which scheduler controls it?
+Process Management | 4 | compare | Differentiate between I/O-bound and CPU-bound processes. Why should the long-term scheduler mix them?
+
+Threads | 2 | theory | Define a thread. What does a thread share with other threads of the same process?
+Threads | 4 | theory | List four benefits of multithreaded programming.
+Threads | 5 | compare | Differentiate between user-level threads and kernel-level threads.
+Threads | 6 | diagram | Explain the many-to-one, one-to-one and many-to-many multithreading models with diagrams.
+Threads | 3 | compare | Differentiate between concurrency and parallelism.
+Threads | 5 | code | Write a C program using Pthreads to create two threads that print different messages, and wait for both to finish.
+Threads | 4 | compare | Compare a process and a thread on creation cost, memory sharing and context switch time.
+Threads | 3 | theory | Why can a blocking system call in one user-level thread block the whole process in the many-to-one model?
+Threads | 4 | theory | What is a thread pool? Why is it useful in a web server?
+
+CPU Scheduling | 2 | theory | What is the role of the dispatcher? Define dispatch latency.
+CPU Scheduling | 4 | compare | Differentiate between preemptive and non-preemptive scheduling with one example each.
+CPU Scheduling | 5 | theory | List and define the five CPU scheduling criteria.
+CPU Scheduling | 3 | theory | What is the convoy effect? Which algorithm suffers from it?
+CPU Scheduling | 4 | theory | Why is SJF called optimal? What is its practical drawback?
+CPU Scheduling | 4 | theory | Explain starvation in priority scheduling and how aging solves it.
+CPU Scheduling | 4 | theory | How does the choice of time quantum affect Round Robin performance?
+CPU Scheduling | 6 | theory | Explain the multilevel feedback queue scheduling algorithm. What parameters define it?
+CPU Scheduling | 10 | numerical | Five processes with given arrival and burst times. Draw Gantt charts for FCFS, SJF, SRTF and RR (q=2) and compare the average waiting times.
+CPU Scheduling | 8 | numerical | Given arrival time, burst time and priority of four processes, compute the average turnaround time using preemptive priority scheduling.
+CPU Scheduling | 4 | theory | How is the next CPU burst predicted using exponential averaging?
+CPU Scheduling | 5 | theory | Explain processor affinity and load balancing in multiprocessor scheduling.
+CPU Scheduling | 5 | theory | Explain Rate Monotonic and Earliest Deadline First real-time scheduling.
+
+Process Synchronization | 3 | theory | What is a race condition? Give an example with a shared counter.
+Process Synchronization | 4 | theory | State the three requirements that a solution to the critical section problem must satisfy.
+Process Synchronization | 6 | code | Explain Peterson's solution and show that it satisfies mutual exclusion.
+Process Synchronization | 4 | compare | Differentiate between a binary semaphore and a counting semaphore.
+Process Synchronization | 4 | compare | Differentiate between a mutex lock and a spinlock. When is a spinlock preferred?
+Process Synchronization | 8 | code | Solve the bounded buffer (producer-consumer) problem using semaphores.
+Process Synchronization | 8 | code | Solve the first readers-writers problem using semaphores. Which process can starve?
+Process Synchronization | 8 | code | Explain the dining philosophers problem. Give a deadlock-free solution.
+Process Synchronization | 5 | theory | What is a monitor? How do condition variables work inside a monitor?
+Process Synchronization | 4 | theory | Explain the test_and_set instruction and how it can be used to implement mutual exclusion.
+Process Synchronization | 3 | theory | What is busy waiting? How do blocking semaphores avoid it?
+Process Synchronization | 4 | theory | What is priority inversion? How does priority inheritance solve it?
+
+Deadlocks | 4 | theory | State the four necessary conditions for deadlock.
+Deadlocks | 3 | theory | Is every unsafe state a deadlock? Justify your answer.
+Deadlocks | 10 | numerical | Given Allocation, Max and Available matrices, find the Need matrix and a safe sequence using the Banker's algorithm.
+Deadlocks | 8 | numerical | Given a system state, determine whether a resource request by a process can be granted immediately using the resource-request algorithm.
+Deadlocks | 5 | diagram | How does a resource allocation graph show a deadlock when resources have single and multiple instances?
+Deadlocks | 6 | theory | Explain how each of the four deadlock conditions can be prevented.
+Deadlocks | 4 | compare | Differentiate between deadlock prevention and deadlock avoidance.
+Deadlocks | 5 | theory | Explain methods of recovery from deadlock. What factors decide the victim?
+Deadlocks | 3 | compare | Differentiate between deadlock and starvation.
+Deadlocks | 4 | theory | What is a wait-for graph? How is it used for deadlock detection?
+Deadlocks | 3 | theory | Why do most general-purpose operating systems ignore deadlocks?
+
+Memory Management | 3 | compare | Differentiate between logical and physical addresses.
+Memory Management | 4 | compare | Differentiate between internal and external fragmentation.
+Memory Management | 6 | numerical | Given memory holes and process sizes, show allocation using first fit, best fit and worst fit.
+Memory Management | 6 | diagram | Explain paging hardware with a neat diagram.
+Memory Management | 4 | theory | What is a TLB and how does it reduce effective memory access time?
+Memory Management | 5 | numerical | Calculate the effective access time for a given TLB hit ratio, TLB access time and memory access time.
+Memory Management | 5 | numerical | For a given logical address size and page size, find the number of bits for page number and offset and the size of the page table.
+Memory Management | 6 | compare | Compare paging and segmentation.
+Memory Management | 5 | theory | Explain hierarchical (two-level) paging. Why is it needed?
+Memory Management | 4 | theory | What is an inverted page table? What is its advantage and disadvantage?
+Memory Management | 3 | theory | What is compaction? When is it possible?
+Memory Management | 4 | theory | Explain swapping. Why is standard swapping rarely used in modern systems?
+
+Virtual Memory | 3 | theory | What is virtual memory? List its benefits.
+Virtual Memory | 6 | theory | Explain demand paging and the steps in handling a page fault.
+Virtual Memory | 10 | numerical | Compute the number of page faults for FIFO, LRU and Optimal page replacement for a given reference string and number of frames.
+Virtual Memory | 4 | theory | What is Belady's anomaly? Which page replacement algorithm shows it?
+Virtual Memory | 5 | theory | Explain thrashing and how the working-set model prevents it.
+Virtual Memory | 5 | numerical | Compute the effective access time given the page fault rate, memory access time and page fault service time.
+Virtual Memory | 4 | theory | Explain the second-chance (clock) page replacement algorithm.
+Virtual Memory | 3 | theory | What is copy-on-write? How does it speed up fork()?
+Virtual Memory | 4 | compare | Differentiate between global and local page replacement.
+Virtual Memory | 3 | theory | What is the purpose of the dirty (modify) bit?
+Virtual Memory | 4 | theory | Explain the page fault frequency approach to control thrashing.
+Virtual Memory | 3 | theory | What are memory-mapped files?
+
+File Systems | 3 | theory | List the attributes of a file.
+File Systems | 4 | compare | Compare sequential, direct and indexed file access methods.
+File Systems | 6 | compare | Compare contiguous, linked and indexed allocation methods.
+File Systems | 5 | diagram | Explain the structure of a UNIX inode with a diagram.
+File Systems | 5 | numerical | With 12 direct pointers, single, double and triple indirect pointers, 4 KB blocks and 4-byte pointers, find the maximum file size.
+File Systems | 5 | theory | Explain the different directory structures.
+File Systems | 4 | compare | Differentiate between hard links and symbolic links.
+File Systems | 4 | theory | Explain free space management using a bit vector and a linked list.
+File Systems | 3 | theory | What is the File Allocation Table (FAT)?
+File Systems | 4 | theory | Explain the UNIX permission model (owner, group, others).
+File Systems | 4 | theory | What is journaling in a file system? Why is it used?
+File Systems | 3 | theory | What is mounting a file system?
+
+Disk Scheduling | 3 | theory | Define seek time, rotational latency and transfer time.
+Disk Scheduling | 10 | numerical | For a given request queue and head position, find the total head movement using FCFS, SSTF, SCAN, C-SCAN, LOOK and C-LOOK.
+Disk Scheduling | 4 | compare | Differentiate between SCAN and C-SCAN.
+Disk Scheduling | 3 | theory | Why can SSTF cause starvation?
+Disk Scheduling | 5 | compare | Explain RAID levels 0, 1 and 5.
+Disk Scheduling | 3 | theory | Why is disk scheduling less important for SSDs?
+Disk Scheduling | 4 | theory | Which disk scheduling algorithm would you choose for a heavily loaded system, and why?
+
+I/O Systems | 4 | compare | Compare polling, interrupt-driven I/O and DMA.
+I/O Systems | 4 | compare | Differentiate between buffering, caching and spooling.
+I/O Systems | 3 | compare | Differentiate between blocking and non-blocking I/O.
+I/O Systems | 4 | theory | What is a device driver? Where does it sit in the I/O software layers?
+I/O Systems | 3 | compare | Differentiate between block devices and character devices.
+I/O Systems | 3 | theory | Why is double buffering used?
+
+System Calls | 3 | theory | What is a system call? How is it different from a library function call?
+System Calls | 4 | theory | List the categories of system calls with one example each.
+System Calls | 3 | theory | What does fork() return in the parent and in the child?
+System Calls | 3 | numerical | How many processes are created by three consecutive fork() calls?
+System Calls | 3 | theory | Why does code written after a successful exec() never run?
+System Calls | 6 | code | Write a C program where the parent creates a child using fork(), the child runs ls -l using execlp(), and the parent waits for the child.
+System Calls | 4 | compare | Differentiate between wait() and waitpid().
+System Calls | 5 | code | Write a C program to copy one file to another using open(), read(), write() and close().
+System Calls | 4 | theory | How does the shell implement output redirection using file descriptors and dup2()?
+System Calls | 4 | code | Predict the output of a program that calls fork() inside a for loop and prints in each iteration.
+
+Inter-Process Communication | 4 | compare | Compare shared memory and message passing.
+Inter-Process Communication | 6 | code | Write a C program where the parent sends a string to the child through a pipe.
+Inter-Process Communication | 3 | compare | Differentiate between ordinary pipes and named pipes (FIFOs).
+Inter-Process Communication | 4 | theory | Explain the System V shared memory calls shmget, shmat, shmdt and shmctl.
+Inter-Process Communication | 3 | theory | What is a signal? Why can SIGKILL not be caught?
+Inter-Process Communication | 4 | compare | Differentiate between direct and indirect communication in message passing.
+Inter-Process Communication | 3 | theory | Why must unused ends of a pipe be closed?
+Inter-Process Communication | 4 | theory | What are sockets? How are they used for communication between processes?
+
+Linux Commands | 2 | theory | What does chmod 755 file do?
+Linux Commands | 3 | application | Write a command to count the number of lines containing the word error in log.txt.
+Linux Commands | 3 | application | Write a command to find all .c files in the home directory.
+Linux Commands | 3 | compare | Differentiate between kill and kill -9.
+Linux Commands | 3 | application | Write a command to list all running processes and show only those belonging to bash.
+Linux Commands | 3 | compare | Differentiate between > and >> redirection.
+Linux Commands | 3 | application | Write a command pipeline to display the 5 largest files in the current directory.
+Linux Commands | 2 | theory | What is the use of the umask command?
+Linux Commands | 3 | application | Write a command to print the second column of a comma-separated file.
+Linux Commands | 3 | theory | What do man page sections 1, 2 and 3 contain?
+
+Shell Programming | 2 | theory | What is the shebang line in a shell script?
+Shell Programming | 3 | theory | What do $0, $#, $@, $? and $$ mean in a shell script?
+Shell Programming | 5 | code | Write a shell script to check whether a number is prime.
+Shell Programming | 5 | code | Write a shell script to find the factorial of a number.
+Shell Programming | 5 | code | Write a shell script to reverse a number and check whether it is a palindrome.
+Shell Programming | 5 | code | Write a shell script to print the Fibonacci series up to n terms.
+Shell Programming | 5 | code | Write a menu-driven calculator using a case statement.
+Shell Programming | 4 | code | Write a shell script to find the largest of three numbers.
+Shell Programming | 4 | code | Write a shell script that takes a file name as an argument and prints whether it exists, and if so its number of lines, words and characters.
+Shell Programming | 3 | compare | Differentiate between $(( )) and expr for arithmetic.
+
+Protection and Security | 3 | compare | Differentiate between protection and security.
+Protection and Security | 5 | theory | Explain the access matrix model of protection.
+Protection and Security | 4 | compare | Compare access control lists and capability lists.
+Protection and Security | 3 | theory | What is the principle of least privilege?
+Protection and Security | 5 | theory | Explain program threats: Trojan horse, trap door and buffer overflow.
+Protection and Security | 4 | theory | How are passwords stored securely by an operating system?
+Protection and Security | 3 | theory | What are the setuid and setgid bits?
+
+Virtualization | 3 | theory | What is a virtual machine? What is a hypervisor?
+Virtualization | 4 | compare | Differentiate between type 1 and type 2 hypervisors.
+Virtualization | 4 | compare | Differentiate between virtual machines and containers.
+Virtualization | 3 | theory | What is paravirtualization?
+Virtualization | 3 | theory | What kernel features do Linux containers rely on?
+
+# ---------------------------------------------------------------------------
+# REAL previous-year questions, BACSE106 CAT papers (5th field = which paper).
+# Transcribed from the papers; long case studies are kept close to the original wording.
+# ---------------------------------------------------------------------------
+
+OS Basics | 10 | application | An OS is being designed for an ATM that must keep running if one software service fails, securely process transactions, manage the card reader and cash dispenser, and allow updates without affecting the whole system; the company prefers keeping only essential functions in kernel space. a) Recommend, with justification and a neat illustration, a suitable OS structure (5). b) Discuss the OS services needed for reliability and efficient resource management (3). c) Discuss the challenges of developing operating systems for mission-critical applications (2). | CAT-1 Fall 2026-27 C1
+OS Basics | 5 | compare | A university lab has hundreds of students using programming environments during the day and large data-processing jobs at night. Compare time-sharing and multiprogramming operating systems for this scenario and suggest the most suitable approach for daytime and night-time, with justification. | CAT-1 Fall 2026-27 C1
+System Calls | 5 | code | Predict the output and draw the process creation tree: int main(){ int i; for(i = 0; i < 2; i++){ if(fork()) printf("P "); else printf("C "); } return 0; } | CAT-1 Fall 2026-27 C1
+Process Management | 10 | application | A browser (pid 2201) spawns a tab process (2305); the tab spawns a pop-up process (2312); the browser also spawns a download manager (2260) that keeps sending progress updates to the browser. 2312 exits normally but 2305 never collects its exit status, and then 2305 crashes. a) Draw the process tree (5). b) Which state does 2312 get stuck in, and why, even though it finished (3)? c) Why does the crash of 2305 not bring down the browser or the download manager (2)? | CAT-1 Fall 2026-27 C1
+Threads | 10 | application | A cloud storage app creates separate threads to encrypt, compress, virus-scan and upload each file. The server has 16 cores but CPU utilization rarely exceeds 10%. a) Explain the likely reason based on the threading model used (5). b) How can the application be modified to improve processor utilization (5)? | CAT-1 Fall 2026-27 C1
+CPU Scheduling | 10 | numerical | Preemptive priority scheduling (higher number = higher priority): A, B, C, D arrive at 0, 2, 3, 5 ms with bursts 5, 3, 6, 2 ms and priorities 2, 4, 5, 3. Process C does a 2 ms I/O after executing for 3 ms. a) Gantt chart, waiting time and turnaround time of each process (5). b) State transitions of all processes at each scheduling event (3). c) List the context switches and the events that trigger them (2). | CAT-1 Fall 2026-27 C1
+
+OS Basics | 10 | application | A university stores records, results, course material and research data on several storage devices; staff face delays accessing files at peak times and the same documents are stored in many places. a) Identify and explain the major OS design issue (5). b) Give the OS-level solution (2). c) Explain the OS services used in this scenario (3). | CAT-1 Fall 2026-27 C2
+System Calls | 10 | application | Patient-monitoring pseudocode: register a SIGINT handler, open patient_log.txt for create/write, loop reading heart rate and oxygen level and writing to the file, run the scheduler on timer interrupts, and on the emergency button flush pending data, close the file and exit. a) Identify all system calls/OS services used and their purpose (3). b) Identify and classify the interrupts involved (4). c) Explain how the OS handles these interrupts until the application resumes or terminates (3). | CAT-1 Fall 2026-27 C2
+Process Management | 10 | application | Process P1 is created, scheduled, then waits for data from a remote database; P2 runs meanwhile; the response arrives; before P1 resumes, a higher-priority process P3 arrives and gets the CPU; after P3 completes, P1 resumes and finishes. a) Explain the role of the CPU scheduler and I/O events in the state transitions and draw the state diagram (4). b) Give P1's state after each of the seven events (3). c) Describe the execution sequence if the OS did not support preemption after event 6 (3). | CAT-1 Fall 2026-27 C2
+CPU Scheduling | 10 | numerical | A system always runs the process that can finish quickest, preempting if a new arrival needs less remaining time. P1-P7 arrive at 0, 1, 2, 3, 4, 5, 6 with bursts 5, 3, 2, 3, 1, 1, 1. a) Identify the algorithm and give one advantage in a real-time environment (3). b) Draw the Gantt chart (3). c) Find average turnaround and waiting time (4). | CAT-1 Fall 2026-27 C2
+CPU Scheduling | 10 | numerical | Priority scheduling with Round Robin (q = 3 ms) where a higher priority value means higher priority: P1 burst 8 priority 2, P2 burst 5 priority 1, P3 burst 7 priority 2, P4 burst 4 priority 1, P5 burst 6 priority 3 (corrected by hand to 7 on the paper). a) Gantt chart, average waiting and turnaround time (7). b) How do continuous arrivals of priority 1 and 2 requests affect priority 3 tasks (3)? | CAT-1 Fall 2026-27 C2
+
+OS Basics | 10 | theory | For an OS that must run on hardware from embedded medical devices to monitoring servers (reliability, security, scalability, easy maintenance, fast boot), explain Monolithic, Layered, Microkernel and Modular structures with sketches and pros and cons, justify the most suitable one, and identify the essential OS services. | CAT-1 Winter 2025-26 G1
+I/O Systems | 5 | theory | A single program sends output to a printer using interrupt-driven I/O. Explain the interrupt timeline and the role of the interrupt service routine (ISR) in completing the output. | CAT-1 Winter 2025-26 G1
+System Calls | 5 | theory | Analyse the methods of passing parameters to system calls, and explain with a diagram how parameters go from user space to kernel space. | CAT-1 Winter 2025-26 G1
+Process Management | 5 | theory | Explain the process creation mechanism, the role of the PCB in keeping process context, and how the parent-child relationship affects resource sharing and address space allocation. | CAT-1 Winter 2025-26 G1
+Threads | 5 | theory | Analyse how multithreading improves performance and resource utilization on multicore systems, and explain data parallelism and task parallelism with diagrams. | CAT-1 Winter 2025-26 G1
+CPU Scheduling | 10 | numerical | Processes (priority, burst, arrival): P1 (5, 13, 6), P2 (10, 15, 10), P3 (30, 40, 15), P4 (3, 12, 12), P5 (2, 4, 0), P6 (6, 4, 5); lower value = higher priority. Draw Gantt charts and find average waiting and turnaround time for i) preemptive priority (3), ii) non-preemptive SJF (3), iii) Round Robin with q = 10 ms (4). | CAT-1 Winter 2025-26 G1
+CPU Scheduling | 10 | numerical | Multilevel queue scheduling: Q1 non-preemptive priority (lower number = higher priority), Q2 Round Robin q = 4, Q3 FCFS; higher queues preempt lower ones; CPU idles if nothing is ready. Processes (priority, burst, arrival, queue): P1 (3, 6, 0, Q3), P2 (2, 4, 1, Q1), P3 (1, 3, 2, Q2), P4 (6, 2, 15, Q1), P5 (8, 5, 16, Q3), P6 (2, 7, 17, Q2), P7 (1, 3, 20, Q1). Draw the Gantt chart and find average turnaround, waiting and response time. | CAT-1 Winter 2025-26 G1
+
+OS Basics | 10 | application | One core design must serve A) a safety-critical embedded system needing fault isolation, B) a teaching OS for universities, C) a high-performance server/desktop OS that loads drivers and extensions without rebooting. a) Explain Monolithic, Layered, Microkernel and Modular structures with diagrams and their pros and cons (7). b) Choose the best structure for A, B and C with justification (3). | CAT-1 Winter 2025-26 G2
+System Calls | 10 | application | In a multi-user OS: a user starts, kills and waits for programs; an app creates, writes, reads and deletes a file; a printer and disk are shared; the OS reads time, process status and usage; apps on two machines exchange messages; a banking app restricts file access. a) Identify the type of system call for each situation (3). b) Explain the importance of each type with examples (5). c) Describe how a system call transfers control between user and kernel mode (2). | CAT-1 Winter 2025-26 G2
+Process Management | 5 | diagram | Discuss the data structure the OS uses to store information about each process, its contents, and how it supports scheduling and context switching, with a labelled diagram. | CAT-1 Winter 2025-26 G2
+Threads | 5 | compare | Analyse the multithreading models and compare user-level threads with kernel-level threads. | CAT-1 Winter 2025-26 G2
+CPU Scheduling | 10 | numerical | P1-P6 arrive at 0, 1, 2, 4, 5, 6 ms with total execution times 20, 18, 15, 10, 6, 12 ms, of which 80% is CPU burst (rounded to the nearest whole number). Using only CPU bursts, for SRTF and for Round Robin (q = 5 ms): a) Gantt chart, b) average turnaround time, c) average waiting time, d) response time of each process. | CAT-1 Winter 2025-26 G2
+CPU Scheduling | 10 | numerical | Multilevel queue (lower queue number = higher priority, preemptive between queues, no movement between queues): Q1 preemptive priority, Q2 FCFS, Q3 Round Robin q = 3. Processes (arrival, burst, priority, queue): P1 (0, 10, 2, Q2), P2 (1, 6, 1, Q1), P3 (2, 8, 3, Q3), P4 (3, 4, 1, Q1), P5 (4, 5, 2, Q2), P6 (4, 9, 2, Q1), P7 (5, 13, 4, Q3), P8 (5, 4, 1, Q2), P9 (7, 1, 5, Q3). a) Gantt chart (4). b) Waiting, turnaround and response time per process (3). c) Number of context switches and their causes (3). | CAT-1 Winter 2025-26 G2
+
+Deadlocks | 10 | numerical | Five departments share GPU types P, Q, R, S with totals (4, 7, 10, 9). Allocation: Analytics (1,2,1,0), ML_Training (1,1,2,3), Web_Hosting (0,0,1,0), Database (2,1,1,0), Security (0,1,1,0). Max: Analytics (1,4,3,5), ML_Training (2,4,5,4), Web_Hosting (1,2,2,0), Database (6,7,6,3), Security (0,3,3,3). a) Need matrix (2). b) Safe or unsafe by Banker's algorithm with all steps (4). c) Can ML_Training's request (1,2,1,0) be granted (4)? | CAT-2 Winter 2025-26 G1
+Process Synchronization | 10 | application | A shared counter starts at 50; P1 adds 5, P2 adds 3, P3 adds 4, P4 adds 2, executing in the order P2, P1, P4, P3. a) Explain with pseudocode how a hardware atomic instruction prevents race conditions (3). b) Show the semaphore wait() and signal() operations (3). c) Find the final counter value (4). | CAT-2 Winter 2025-26 G1
+Process Synchronization | 10 | code | Modified producer-consumer: chefs place meals on a pickup counter of size 8 and delivery agents collect them; agents may collect only when at least 2 meals exist; after 4 deliveries chefs must pause; chefs resume only after 3 delivery requests arrive. a) Define the synchronization variables and how mutual exclusion and buffer limits are kept (4). b) Pseudocode for the chef (3). c) Pseudocode for the delivery agent (3). | CAT-2 Winter 2025-26 G1
+Memory Management | 10 | numerical | Free blocks of 150, 400, 300, 400, 500, 350, 250 KB; processes P1 = 198, P2 = 313, P3 = 221, P4 = 516, P5 = 75, P6 = 255 KB. Allocate using first fit, best fit and worst fit, and compare them. | CAT-2 Winter 2025-26 G1
+Memory Management | 10 | numerical | a) With 8 KB pages and a 36-bit virtual address, find the page-offset bits and the number of page-table entries. b) Segment Data has base 8000 and limit 600, and Stack has base 12000 and limit 400: find the physical address of (Data, 350) and check whether (Stack, 450) is valid. c) TLB search takes 15 ns, memory access 120 ns, the page table has two levels and the EAT is 165 ns: find the TLB hit ratio. | CAT-2 Winter 2025-26 G1
+
+Deadlocks | 10 | numerical | Allocation (R1..R6): P1 (1,0,0,0,1,0), P2 (1,0,0,1,0,0), P3 (0,0,0,0,0,1), P4 (0,1,0,1,0,0), P5 (0,0,1,0,0,1). Request: P1 (0,0,0,1,0,0), P2 (0,1,0,0,0,0), P3 (0,0,0,1,0,0), P4 (0,0,0,0,0,1), P5 (0,0,0,0,0,0). Total resources R1=2, R2=1, R3=2, R4=2, R5=1, R6=2. i) Draw the RAG and compute the need and available matrices (3). ii) Show the steps of a suitable deadlock avoidance algorithm (5). iii) Give the safe sequence (2). | CAT-2 Winter 2025-26 G2
+Process Synchronization | 10 | code | A hospital has one operating theatre used for emergency or scheduled surgeries, one at a time; emergencies have priority, but scheduled surgeries must not starve when no emergencies are waiting. Write a synchronization algorithm using semaphores and mutex locks. | CAT-2 Winter 2025-26 G2
+Process Synchronization | 10 | code | Two threads in a ticket booking system each increment tickets_sold 10,000 times and the final value is often wrong. Without semaphores, mutexes, monitors or atomic instructions (only shared variables and software logic): i) identify the problem (2), ii) write pseudocode for a coordination method that prevents simultaneous access (5), iii) explain how it achieves mutual exclusion, progress and bounded waiting (3). | CAT-2 Winter 2025-26 G2
+Memory Management | 10 | numerical | Memory partitions in order: 120, 350, 600, 200, 450, 700, 180, 500, 320, 260 KB. Processes arrive in order: 115, 420, 180, 610, 90, 300, 275, 510, 140, 350 KB. Using first fit, best fit and worst fit: i) show the step-by-step allocation and which partition each process gets (7), ii) which partitions remain unallocated, and why (3). | CAT-2 Winter 2025-26 G2
+Memory Management | 10 | numerical | i) A process makes 120 accesses with a 70% TLB hit ratio and then 80 accesses with 85%; hit time is 6 ms and miss time 36 ms. Find the overall time and average access time (5). ii) Segment table (base, length): A (100, 200), B (400, 500), C (1000, 300), D (1500, 250), E (1900, 150). For logical addresses (A, 199), (C, 100), (D, 260), (E, 120), identify valid and invalid ones and draw the memory map (5). | CAT-2 Winter 2025-26 G2

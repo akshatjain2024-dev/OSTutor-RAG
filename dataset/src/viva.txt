@@ -1,0 +1,418 @@
+# Viva questions with short model answers (what an examiner expects in 1-3 sentences).
+# Format: "## Topic" heading, then Q: / A: pairs separated by a blank line.
+
+## OS Basics
+Q: What is an operating system?
+A: It is system software that manages the hardware (CPU, memory, storage, I/O) and provides services and a convenient interface to user programs. It acts as a resource allocator and a control program.
+
+Q: What is the kernel?
+A: The kernel is the core part of the OS that is always running in memory in privileged mode. It handles process scheduling, memory management, device control and system calls.
+
+Q: Why do we need dual-mode operation?
+A: To protect the OS and other programs from errant or malicious user programs. Privileged instructions can only run in kernel mode, so a user program must ask the kernel through a system call.
+
+Q: What happens when a user program executes a privileged instruction in user mode?
+A: The hardware does not execute it and instead raises a trap to the OS, which usually terminates the program.
+
+Q: What is the difference between multiprogramming and multitasking?
+A: Multiprogramming keeps several jobs in memory so the CPU switches when one waits for I/O, improving CPU utilization. Multitasking (time-sharing) switches the CPU frequently, even without I/O, so many users get quick responses.
+
+Q: What is a bootstrap program?
+A: It is the small program stored in firmware (BIOS/UEFI) that runs at power-on, initializes the hardware and loads the OS kernel into memory.
+
+Q: What is a timer used for in an OS?
+A: A timer interrupts the CPU after a set period so the OS regains control, which prevents a user program from running forever and enables time-sharing.
+
+Q: Give one example each of a monolithic kernel and a microkernel.
+A: Linux is a monolithic kernel; Mach and QNX are microkernels. macOS uses a hybrid built on Mach.
+
+## Process Management
+Q: What is the difference between a program and a process?
+A: A program is a passive set of instructions stored on disk. A process is a program in execution, with a program counter, registers, stack, heap and allocated resources.
+
+Q: Name the five process states.
+A: New, Ready, Running, Waiting (Blocked) and Terminated.
+
+Q: What is stored in a PCB?
+A: Process state, PID, program counter, CPU registers, scheduling info like priority, memory-management info like page tables, accounting info and the list of open files.
+
+Q: What is a context switch?
+A: Saving the state of the running process into its PCB and loading the saved state of the next process. It is overhead because no useful work happens during the switch.
+
+Q: Can a process go directly from Waiting to Running?
+A: No. When the event it waited for completes, it moves to the Ready state and must be picked by the scheduler before it runs again.
+
+Q: What is a zombie process?
+A: A process that has terminated but whose parent has not yet called wait(), so its entry remains in the process table holding its exit status.
+
+Q: What is an orphan process?
+A: A process whose parent terminated before it. In Linux it is adopted by init (or systemd), which reaps it when it ends.
+
+Q: Which scheduler runs most frequently?
+A: The short-term (CPU) scheduler, which may run every few milliseconds, so it must be very fast.
+
+Q: What is the PID of init or systemd in Linux?
+A: PID 1. It is the first user process started by the kernel and the ancestor of all other user processes.
+
+## Threads
+Q: What does a thread have of its own, and what does it share?
+A: Each thread has its own thread ID, program counter, registers and stack. It shares the code, data, heap and open files with other threads of the same process.
+
+Q: Why is creating a thread cheaper than creating a process?
+A: A new thread does not need a new address space or copies of resources; it shares them with its process, so only a stack and register context are created.
+
+Q: Which multithreading model does Linux use?
+A: One-to-one: each user thread maps to its own kernel thread (Linux calls them tasks).
+
+Q: What is the drawback of the many-to-one model?
+A: If one thread makes a blocking system call, the whole process blocks, and threads cannot run in parallel on multiple cores.
+
+Q: What does pthread_join() do?
+A: It makes the calling thread wait until the specified thread terminates, similar to wait() for processes.
+
+Q: What flag is used to compile a Pthreads program with gcc?
+A: The -pthread flag, for example gcc prog.c -o prog -pthread.
+
+Q: Can you have concurrency without parallelism?
+A: Yes. On a single core, the OS interleaves tasks so they all make progress, but only one runs at any instant.
+
+## CPU Scheduling
+Q: What is the goal of CPU scheduling?
+A: To keep the CPU busy and decide which ready process runs next, balancing utilization, throughput, turnaround time, waiting time and response time.
+
+Q: What is the difference between turnaround time and waiting time?
+A: Turnaround time is completion time minus arrival time. Waiting time is turnaround time minus burst time, the total time spent in the ready queue.
+
+Q: Which algorithm gives the minimum average waiting time?
+A: SJF (and its preemptive form SRTF) gives the minimum average waiting time for a given set of processes.
+
+Q: Why can't SJF be implemented exactly?
+A: The length of the next CPU burst is not known in advance. It must be predicted, usually with exponential averaging of previous bursts.
+
+Q: What is aging?
+A: Gradually increasing the priority of processes that have waited a long time, so that low-priority processes eventually run and do not starve.
+
+Q: What happens in Round Robin if the time quantum is very large?
+A: RR behaves like FCFS because most processes finish within one quantum.
+
+Q: What happens if the time quantum is very small?
+A: There are too many context switches, so the overhead becomes large and useful CPU time drops.
+
+Q: Is FCFS preemptive?
+A: No. Once a process gets the CPU it keeps it until it finishes or blocks.
+
+Q: What is a multilevel feedback queue?
+A: A scheduler with several queues of different priorities where processes move between queues based on their CPU usage. CPU-heavy processes sink to lower queues and interactive ones stay high.
+
+Q: Which Linux scheduler is the default for normal processes?
+A: The Completely Fair Scheduler (CFS), which tracks each task's virtual runtime and always runs the task with the smallest vruntime. Newer kernels (6.6+) replaced it with EEVDF, which works on similar fairness ideas.
+
+## Process Synchronization
+Q: What is a critical section?
+A: The part of a program where it accesses shared data. Only one process should execute its critical section at a time.
+
+Q: What is a race condition?
+A: A situation where the result depends on the order in which concurrent processes access shared data, for example two threads incrementing a counter and losing an update.
+
+Q: What are the three requirements for a critical section solution?
+A: Mutual exclusion, progress and bounded waiting.
+
+Q: What are the two operations on a semaphore?
+A: wait() (P, down), which decrements and may block, and signal() (V, up), which increments and may wake a waiting process. Both must be atomic.
+
+Q: What is the difference between a mutex and a binary semaphore?
+A: Both allow one process at a time, but a mutex has an owner and must be released by the thread that locked it, while any process can signal a semaphore.
+
+Q: What are the initial values of the semaphores in the bounded buffer problem?
+A: mutex = 1, empty = n (the buffer size) and full = 0.
+
+Q: What can go wrong if wait(empty) and wait(mutex) are swapped in the producer?
+A: The producer may hold the mutex while waiting on a full buffer, and the consumer can never get the mutex to empty it, causing a deadlock.
+
+Q: How can the dining philosophers deadlock be avoided?
+A: Allow at most four philosophers at the table, let a philosopher pick up both chopsticks only if both are free, or make odd philosophers pick up the left first and even ones the right first.
+
+Q: What is a spinlock?
+A: A lock where a waiting thread keeps looping (busy waiting) until the lock is free. It avoids context switches, so it suits short critical sections on multicore systems.
+
+Q: What is priority inversion?
+A: When a high-priority process waits for a lock held by a low-priority process, which is itself preempted by a medium-priority process. Priority inheritance fixes it by temporarily raising the low-priority holder's priority.
+
+## Deadlocks
+Q: What is a deadlock?
+A: A situation where a set of processes are each waiting for a resource held by another process in the set, so none of them can ever proceed.
+
+Q: What are the four necessary conditions for deadlock?
+A: Mutual exclusion, hold and wait, no preemption and circular wait. All four must hold at the same time.
+
+Q: What is a safe state?
+A: A state in which there exists at least one order (safe sequence) in which all processes can obtain their maximum resources and finish.
+
+Q: Is an unsafe state always a deadlock?
+A: No. An unsafe state only means deadlock is possible; processes may still release resources before requesting their maximum.
+
+Q: How is the Need matrix calculated in the Banker's algorithm?
+A: Need = Max − Allocation, for every process and resource type.
+
+Q: How can circular wait be prevented?
+A: By numbering all resource types and requiring every process to request resources in increasing order of their numbers.
+
+Q: What is the difference between deadlock and starvation?
+A: In deadlock processes wait on each other forever and none progress. In starvation a process waits indefinitely while others keep progressing, for example due to low priority.
+
+Q: When does a cycle in a resource allocation graph mean a definite deadlock?
+A: When every resource type in the cycle has only one instance. With multiple instances, a cycle only means deadlock is possible.
+
+Q: What approach do Linux and Windows take for deadlocks?
+A: They mostly ignore the problem (the ostrich approach) and leave it to application developers, because prevention and avoidance are expensive.
+
+## Memory Management
+Q: What does the MMU do?
+A: The Memory Management Unit translates logical (virtual) addresses generated by the CPU into physical addresses at run time.
+
+Q: What are the base and limit registers used for?
+A: The base register holds the smallest legal physical address of a process and the limit register its size; every address is checked against them for protection.
+
+Q: What is external fragmentation?
+A: Enough total free memory exists to satisfy a request, but it is scattered in small non-contiguous holes.
+
+Q: What is internal fragmentation?
+A: Wasted space inside an allocated block because the block is larger than the memory requested.
+
+Q: Does paging cause external fragmentation?
+A: No. Any free frame can be used for any page, so there is no external fragmentation, but the last page of a process can cause internal fragmentation.
+
+Q: How is a logical address divided in paging?
+A: Into a page number, which indexes the page table, and an offset within the page.
+
+Q: What is a TLB hit?
+A: When the page number is found in the TLB, so the frame number is obtained without accessing the page table in memory.
+
+Q: Why is multi-level paging used?
+A: With large address spaces a single page table becomes huge. Multi-level paging pages the page table itself so only the parts in use need to be in memory.
+
+Q: What is segmentation?
+A: A memory scheme that divides a program into variable-size logical segments like code, data and stack, each addressed by a segment number and an offset.
+
+Q: Which placement strategy is usually fastest?
+A: First fit, because it stops searching as soon as it finds a hole that is large enough.
+
+## Virtual Memory
+Q: What is virtual memory?
+A: A technique that lets a process execute even when only part of it is in physical memory, giving each process a large logical address space backed by disk.
+
+Q: What is demand paging?
+A: Loading a page into memory only when it is first referenced, instead of loading the whole program at the start.
+
+Q: What is a page fault?
+A: A trap raised when a process accesses a page that is not currently in memory (its valid bit is invalid). The OS then loads the page from disk.
+
+Q: Which page replacement algorithm has the lowest fault rate?
+A: The Optimal algorithm (replace the page not used for the longest time in the future), but it needs future knowledge so it is only used as a benchmark.
+
+Q: What is Belady's anomaly?
+A: When increasing the number of frames increases the number of page faults. It can happen with FIFO but not with LRU or OPT.
+
+Q: Why don't LRU and OPT suffer from Belady's anomaly?
+A: They are stack algorithms: the set of pages in memory with n frames is always a subset of the set with n+1 frames.
+
+Q: What is thrashing?
+A: When a process spends more time paging than executing because it does not have enough frames for its working set. CPU utilization drops sharply.
+
+Q: What is the working set?
+A: The set of pages a process referenced in its most recent Δ (delta) memory references; it approximates the pages it currently needs.
+
+Q: What is the purpose of the reference bit?
+A: The hardware sets it when a page is accessed, so the OS can approximate LRU, for example in the second-chance (clock) algorithm.
+
+Q: Why is copy-on-write useful?
+A: After fork(), parent and child share pages until one writes, so pages are copied only when necessary and fork() becomes fast, especially when exec() follows.
+
+## File Systems
+Q: What is a file?
+A: A named collection of related information stored on secondary storage; the smallest logical unit of storage visible to users.
+
+Q: What is an inode?
+A: A UNIX data structure storing a file's metadata (owner, permissions, size, timestamps, link count) and pointers to its data blocks. It does not store the file name.
+
+Q: Where is the file name stored in UNIX?
+A: In the directory entry, which maps the name to the inode number.
+
+Q: What is the difference between a hard link and a soft link?
+A: A hard link is another directory entry pointing to the same inode, so it survives deletion of the original name. A soft (symbolic) link is a separate file containing a path, and it breaks if the target is deleted.
+
+Q: Which allocation method has no external fragmentation and supports direct access?
+A: Indexed allocation.
+
+Q: What is the main problem with contiguous allocation?
+A: External fragmentation, and it is hard to grow a file if the following blocks are already used.
+
+Q: How does a bit vector track free space?
+A: Each disk block has one bit; for example 1 means free and 0 means allocated. It is simple and makes finding consecutive free blocks easy.
+
+Q: What does the execute permission mean on a directory?
+A: It allows you to enter (cd into) the directory and access files inside it by name.
+
+Q: What is journaling?
+A: The file system first writes metadata changes to a log (journal) before applying them, so after a crash it can replay or discard incomplete operations quickly. ext4 uses it.
+
+## Disk Scheduling
+Q: Which component of disk access time does disk scheduling try to reduce?
+A: Seek time, which is usually the largest part.
+
+Q: Why is SCAN called the elevator algorithm?
+A: Because the head moves in one direction serving requests until the end, then reverses, like an elevator going up and down.
+
+Q: What is the advantage of C-SCAN over SCAN?
+A: It gives more uniform waiting times, since the head serves requests in only one direction and jumps back to the start.
+
+Q: How does LOOK differ from SCAN?
+A: LOOK reverses at the last request in the current direction instead of going all the way to the end of the disk.
+
+Q: Which disk scheduling algorithm can cause starvation?
+A: SSTF, because requests far from the head can keep getting skipped if new nearby requests keep arriving.
+
+Q: What is RAID 1?
+A: Mirroring: every block is written to two disks, so data survives a single disk failure at the cost of double storage.
+
+## I/O Systems
+Q: What is DMA?
+A: Direct Memory Access lets a device controller transfer a block of data directly between the device and memory, interrupting the CPU only when the whole transfer is done.
+
+Q: What is polling?
+A: The CPU repeatedly checks a device's status register to see if it is ready. It wastes CPU time when the device is slow.
+
+Q: What is spooling?
+A: Holding output for a device, like a printer, in a buffer on disk so that several processes can send jobs while the device prints them one at a time.
+
+Q: What is the difference between a buffer and a cache?
+A: A buffer may hold the only copy of data while it is moved between a device and an application. A cache holds a copy of data that also exists elsewhere, to make access faster.
+
+Q: What is a device driver?
+A: Kernel software that knows how to control a specific device and gives the rest of the OS a uniform interface to it.
+
+## System Calls
+Q: What is a system call?
+A: The programming interface through which a user process requests a service from the kernel, such as creating a process or reading a file.
+
+Q: What does fork() return?
+A: 0 in the child, the child's PID in the parent, and -1 if fork fails.
+
+Q: How many processes are created by n consecutive fork() calls?
+A: The total number of processes becomes 2^n, so 2^n − 1 new child processes are created.
+
+Q: What does exec() do?
+A: It replaces the current process image with a new program. The PID stays the same, and if exec succeeds it never returns.
+
+Q: Why do we use fork() and exec() together?
+A: fork() creates a new process and exec() makes that new process run a different program, while the parent can continue or wait. This is how the shell runs commands.
+
+Q: What is the difference between wait() and waitpid()?
+A: wait() waits for any child to terminate. waitpid() can wait for a specific child and supports options like WNOHANG for non-blocking checks.
+
+Q: What are file descriptors 0, 1 and 2?
+A: Standard input, standard output and standard error.
+
+Q: What does open() return?
+A: The lowest-numbered unused file descriptor, or -1 on error.
+
+Q: What does read() return at end of file?
+A: 0.
+
+Q: What does dup2(fd, 1) do?
+A: It makes file descriptor 1 (standard output) refer to the same file as fd, so everything printed goes to that file. The shell uses this for redirection.
+
+## Inter-Process Communication
+Q: What are the two fundamental IPC models?
+A: Shared memory and message passing.
+
+Q: Which IPC method is faster, shared memory or message passing?
+A: Shared memory, because after setup the processes read and write memory directly without kernel calls. It needs explicit synchronization.
+
+Q: Which end of a pipe is fd[0]?
+A: fd[0] is the read end and fd[1] is the write end.
+
+Q: Can an ordinary pipe be used between unrelated processes?
+A: No, it needs a parent-child (related) relationship. Unrelated processes can use a named pipe (FIFO).
+
+Q: Which signal is sent when you press Ctrl+C?
+A: SIGINT.
+
+Q: Which signals cannot be caught or ignored?
+A: SIGKILL and SIGSTOP.
+
+Q: What does the kill() system call do?
+A: It sends a signal to a process, not necessarily one that kills it.
+
+## Linux Commands
+Q: What does chmod 755 mean?
+A: Owner gets read, write and execute (7); group and others get read and execute (5), shown as rwxr-xr-x.
+
+Q: What does chmod 644 give?
+A: rw-r--r--: the owner can read and write; group and others can only read.
+
+Q: How do you see all running processes?
+A: ps -ef or ps aux. top shows them live with CPU and memory usage.
+
+Q: What is the difference between kill PID and kill -9 PID?
+A: kill sends SIGTERM, which asks the process to exit and can be handled. kill -9 sends SIGKILL, which cannot be caught and terminates immediately.
+
+Q: What does grep -v do?
+A: It prints the lines that do NOT match the pattern.
+
+Q: What does the pipe symbol | do in the shell?
+A: It sends the standard output of the command on its left as standard input to the command on its right.
+
+Q: How do you run a command in the background?
+A: Put & at the end of the command. Use jobs to list background jobs and fg to bring one to the foreground.
+
+Q: What is the difference between 2> and >?
+A: > redirects standard output, while 2> redirects standard error.
+
+## Shell Programming
+Q: What is the shebang line?
+A: The first line of a script, like #!/bin/bash, which tells the system which interpreter to run the script with.
+
+Q: What does $? hold?
+A: The exit status of the last command; 0 means success and non-zero means failure.
+
+Q: What does $# hold?
+A: The number of command-line arguments passed to the script.
+
+Q: Why must there be no spaces around = in a variable assignment?
+A: With spaces, bash treats the variable name as a command and the rest as its arguments, so x = 5 fails while x=5 works.
+
+Q: How do you compare two numbers in a bash if statement?
+A: Using -eq, -ne, -gt, -lt, -ge or -le inside [ ], for example if [ $a -gt $b ].
+
+Q: How do you do decimal arithmetic in shell?
+A: Use bc, for example echo "scale=2; 10/3" | bc, since $(( )) only handles integers.
+
+Q: How do you make a script executable?
+A: chmod +x script.sh, then run it with ./script.sh.
+
+## Protection and Security
+Q: What is the difference between protection and security?
+A: Protection controls access of processes and users to resources inside the system. Security defends the system against external and internal attacks.
+
+Q: What is the access matrix?
+A: A model where rows are domains (users or processes), columns are objects, and each entry lists the access rights the domain has on the object.
+
+Q: What is the principle of least privilege?
+A: Every program and user should get only the minimum privileges needed to do its job, which limits damage from bugs or attacks.
+
+Q: What is a buffer overflow attack?
+A: Writing more data into a buffer than it can hold so that it overwrites adjacent memory, such as a return address, letting the attacker run their own code.
+
+Q: What is the setuid bit?
+A: When set on an executable, the program runs with the privileges of the file's owner instead of the user who started it, for example passwd running as root.
+
+## Virtualization
+Q: What is a hypervisor?
+A: Software (a virtual machine monitor) that creates and runs virtual machines and shares the physical hardware among them.
+
+Q: What is the difference between type 1 and type 2 hypervisors?
+A: A type 1 hypervisor runs directly on the hardware (for example VMware ESXi, Xen, KVM). A type 2 runs on top of a host OS (for example VirtualBox, VMware Workstation).
+
+Q: How are containers different from virtual machines?
+A: Containers share the host's kernel and isolate processes using namespaces and cgroups, so they are lightweight and start fast. VMs each run a full guest OS on virtual hardware.
