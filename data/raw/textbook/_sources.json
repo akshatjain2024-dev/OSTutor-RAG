@@ -1,0 +1,85 @@
+{
+  "Operating_System_Concepts_8th_Edition.pdf": {
+    "topic": "auto",
+    "doc_type": "textbook",
+    "source": "Textbook: Silberschatz, Operating System Concepts (8th ed.)",
+    "pages": [
+      [
+        21,
+        62,
+        "OS Basics"
+      ],
+      [
+        63,
+        112,
+        "auto:OS Basics"
+      ],
+      [
+        115,
+        166,
+        "auto:Process Management"
+      ],
+      [
+        167,
+        196,
+        "Threads"
+      ],
+      [
+        197,
+        236,
+        "CPU Scheduling"
+      ],
+      [
+        239,
+        296,
+        "Process Synchronization"
+      ],
+      [
+        297,
+        326,
+        "Deadlocks"
+      ],
+      [
+        329,
+        370,
+        "Memory Management"
+      ],
+      [
+        371,
+        432,
+        "Virtual Memory"
+      ],
+      [
+        435,
+        518,
+        "File Systems"
+      ],
+      [
+        519,
+        568,
+        "Disk Scheduling"
+      ],
+      [
+        569,
+        602,
+        "I/O Systems"
+      ],
+      [
+        605,
+        682,
+        "Protection and Security"
+      ],
+      [
+        771,
+        790,
+        "auto:CPU Scheduling"
+      ],
+      [
+        813,
+        858,
+        "auto:OS Basics"
+      ]
+    ],
+    "note": "Chapters 16-18 (distributed systems), 20 (multimedia), 22-23 (Windows XP, history), bibliography and index are skipped: outside the BACSE106 syllabus."
+  }
+}
