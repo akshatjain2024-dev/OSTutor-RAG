@@ -1,0 +1,218 @@
+{
+  "1._Introduction_to_OS.pptx": {
+    "topic": "OS Basics",
+    "source": "Faculty slides: Introduction to OS (Session 1)",
+    "doc_type": "faculty"
+  },
+  "Introduction_to_OS.pptx": {
+    "topic": "OS Basics",
+    "source": "Faculty slides: Introduction to OS",
+    "doc_type": "faculty"
+  },
+  "13._Segmentation.pptx": {
+    "topic": "Memory Management",
+    "source": "Faculty slides: Segmentation (Session 13)",
+    "doc_type": "faculty"
+  },
+  "15._Paging.pptx": {
+    "topic": "Memory Management",
+    "source": "Faculty slides: Paging (Session 15)",
+    "doc_type": "faculty"
+  },
+  "17._Advanced_Page_Tables.pptx": {
+    "topic": "Memory Management",
+    "source": "Faculty slides: Advanced Page Tables (Session 17)",
+    "doc_type": "faculty"
+  },
+  "Memory_allocation_algorithm.pptx": {
+    "topic": "Memory Management",
+    "source": "Faculty slides: Memory Allocation Algorithms",
+    "doc_type": "faculty"
+  },
+  "Virtual_memory.pptx": {
+    "topic": "Virtual Memory",
+    "source": "Faculty slides: Virtual Memory",
+    "doc_type": "faculty"
+  },
+  "demand_paging.pptx": {
+    "topic": "Virtual Memory",
+    "source": "Faculty slides: Demand Paging",
+    "doc_type": "faculty"
+  },
+  "locks.pptx": {
+    "topic": "Process Synchronization",
+    "source": "Faculty slides: Locks",
+    "doc_type": "faculty"
+  },
+  "Condition_variable.pptx": {
+    "topic": "Process Synchronization",
+    "source": "Faculty slides: Condition Variables",
+    "doc_type": "faculty"
+  },
+  "Concurrency_bugs.pptx": {
+    "topic": "auto",
+    "fallback_topic": "Process Synchronization",
+    "source": "Faculty slides: Concurrency Bugs",
+    "doc_type": "faculty"
+  },
+  "threads-locks.pdf": {
+    "topic": "Process Synchronization",
+    "source": "Faculty reading: Locks (OSTEP ch. 28)",
+    "doc_type": "faculty"
+  },
+  "threads-sema.pdf": {
+    "topic": "Process Synchronization",
+    "source": "Faculty reading: Semaphores (OSTEP ch. 31)",
+    "doc_type": "faculty"
+  },
+  "dining_philospher.docx": {
+    "topic": "Process Synchronization",
+    "source": "Faculty notes: Dining Philosophers",
+    "doc_type": "faculty"
+  },
+  "dining_philospher.pdf": {
+    "topic": "Process Synchronization",
+    "source": "Faculty notes: Dining Philosophers",
+    "doc_type": "faculty"
+  },
+  "Deadlock_problem.pdf": {
+    "topic": "Deadlocks",
+    "source": "Faculty problem: Deadlock (RAG + Banker's)",
+    "doc_type": "faculty"
+  },
+  "IPC.pdf": {
+    "topic": "Inter-Process Communication",
+    "source": "Faculty lab code: Shared memory IPC",
+    "doc_type": "faculty"
+  },
+  "Process_abstractions.pptx": {
+    "topic": "Process Management",
+    "source": "Faculty slides: The Process Abstraction",
+    "doc_type": "faculty"
+  },
+  "Process_API.pptx": {
+    "topic": "System Calls",
+    "source": "Faculty slides: Process API",
+    "doc_type": "faculty"
+  },
+  "process_API.pdf": {
+    "topic": "System Calls",
+    "source": "Faculty reading: Process API (OSTEP ch. 5)",
+    "doc_type": "faculty"
+  },
+  "Process_execution_mechanism.pptx": {
+    "topic": "auto",
+    "source": "Faculty slides: Process Execution Mechanism",
+    "doc_type": "faculty",
+    "fallback_topic": "Process Management"
+  },
+  "process_execution_mechanism.pdf": {
+    "topic": "auto",
+    "source": "Faculty reading: Limited Direct Execution (OSTEP ch. 6)",
+    "doc_type": "faculty",
+    "fallback_topic": "Process Management"
+  },
+  "Semaphore.pptx": {
+    "topic": "Process Synchronization",
+    "source": "Faculty slides: Semaphores",
+    "doc_type": "faculty"
+  },
+  "Threads_and_concurrency.pptx": {
+    "topic": "Threads",
+    "source": "Faculty slides: Threads and Concurrency",
+    "doc_type": "faculty"
+  },
+  "threads-intro.pdf": {
+    "topic": "auto",
+    "source": "Faculty reading: Concurrency Intro (OSTEP ch. 26)",
+    "doc_type": "faculty",
+    "fallback_topic": "Threads"
+  },
+  "threads-api.pdf": {
+    "topic": "Threads",
+    "source": "Faculty reading: Thread API (OSTEP ch. 27)",
+    "doc_type": "faculty"
+  },
+  "threads-cv.pdf": {
+    "topic": "Process Synchronization",
+    "source": "Faculty reading: Condition Variables (OSTEP ch. 30)",
+    "doc_type": "faculty"
+  },
+  "threads-bugs.pdf": {
+    "topic": "auto",
+    "source": "Faculty reading: Concurrency Bugs (OSTEP ch. 32)",
+    "doc_type": "faculty",
+    "fallback_topic": "Process Synchronization"
+  },
+  "Reader_writer_problem.docx": {
+    "topic": "Process Synchronization",
+    "source": "Faculty notes: Reader-Writer Problem",
+    "doc_type": "faculty"
+  },
+  "Reader_writer_problem.pdf": {
+    "topic": "Process Synchronization",
+    "source": "Faculty notes: Reader-Writer Problem",
+    "doc_type": "faculty"
+  },
+  "2._OS_Functionalities.pptx": {
+    "topic": "OS Basics",
+    "source": "Faculty slides: OS Functionalities (Session 2)",
+    "doc_type": "faculty"
+  },
+  "3._Unix_filestructure_system_calls.pptx": {
+    "topic": "System Calls",
+    "source": "Faculty slides: Unix File-Structure System Calls (Session 3)",
+    "doc_type": "faculty"
+  },
+  "4._The_Abstraction_The_process.pptx": {
+    "topic": "Process Management",
+    "source": "Faculty slides: The Process Abstraction (Session 4)",
+    "doc_type": "faculty"
+  },
+  "5._Process_API.pptx": {
+    "topic": "System Calls",
+    "source": "Faculty slides: Process API (Session 5)",
+    "doc_type": "faculty"
+  },
+  "6._Direct_Execution.pptx": {
+    "topic": "auto",
+    "source": "Faculty slides: Limited Direct Execution (Session 6)",
+    "doc_type": "faculty",
+    "fallback_topic": "Process Management"
+  },
+  "7._Scheduling.pptx": {
+    "topic": "CPU Scheduling",
+    "source": "Faculty slides: Scheduling (Session 7)",
+    "doc_type": "faculty"
+  },
+  "8._Multi_level_feedback_scheduling.pptx": {
+    "topic": "CPU Scheduling",
+    "source": "Faculty slides: Multi-Level Feedback Queue (Session 8)",
+    "doc_type": "faculty"
+  },
+  "9._Scheduling_Proportional_Share.pptx": {
+    "topic": "CPU Scheduling",
+    "source": "Faculty slides: Proportional Share Scheduling (Session 9)",
+    "doc_type": "faculty"
+  },
+  "10._Multiprocessor_Scheduling_Advanced.pptx": {
+    "topic": "CPU Scheduling",
+    "source": "Faculty slides: Multiprocessor Scheduling (Session 10)",
+    "doc_type": "faculty"
+  },
+  "Shell_programming.pptx": {
+    "topic": "Shell Programming",
+    "source": "Faculty slides: Shell Programming",
+    "doc_type": "faculty"
+  },
+  "Shell_programming_sample_exercises.docx": {
+    "topic": "Shell Programming",
+    "source": "Faculty lab sheet: Shell Programming Exercises",
+    "doc_type": "faculty"
+  },
+  "Linux_commands.pdf": {
+    "topic": "Linux Commands",
+    "source": "Faculty notes: Linux Commands",
+    "doc_type": "faculty"
+  }
+}
