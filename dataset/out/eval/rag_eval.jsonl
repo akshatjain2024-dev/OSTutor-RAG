@@ -1,0 +1,71 @@
+{"id": "viva-001", "type": "qa", "topic": "OS Basics", "question": "What is an operating system?", "gold_answer": "It is system software that manages the hardware (CPU, memory, storage, I/O) and provides services and a convenient interface to user programs. It acts as a resource allocator and a control program."}
+{"id": "viva-004", "type": "qa", "topic": "OS Basics", "question": "What happens when a user program executes a privileged instruction in user mode?", "gold_answer": "The hardware does not execute it and instead raises a trap to the OS, which usually terminates the program."}
+{"id": "viva-007", "type": "qa", "topic": "OS Basics", "question": "What is a timer used for in an OS?", "gold_answer": "A timer interrupts the CPU after a set period so the OS regains control, which prevents a user program from running forever and enables time-sharing."}
+{"id": "viva-009", "type": "qa", "topic": "Process Management", "question": "What is the difference between a program and a process?", "gold_answer": "A program is a passive set of instructions stored on disk. A process is a program in execution, with a program counter, registers, stack, heap and allocated resources."}
+{"id": "viva-012", "type": "qa", "topic": "Process Management", "question": "What is a context switch?", "gold_answer": "Saving the state of the running process into its PCB and loading the saved state of the next process. It is overhead because no useful work happens during the switch."}
+{"id": "viva-014", "type": "qa", "topic": "Process Management", "question": "What is a zombie process?", "gold_answer": "A process that has terminated but whose parent has not yet called wait(), so its entry remains in the process table holding its exit status."}
+{"id": "viva-019", "type": "qa", "topic": "Threads", "question": "Why is creating a thread cheaper than creating a process?", "gold_answer": "A new thread does not need a new address space or copies of resources; it shares them with its process, so only a stack and register context are created."}
+{"id": "viva-022", "type": "qa", "topic": "Threads", "question": "What does pthread_join() do?", "gold_answer": "It makes the calling thread wait until the specified thread terminates, similar to wait() for processes."}
+{"id": "viva-026", "type": "qa", "topic": "CPU Scheduling", "question": "What is the difference between turnaround time and waiting time?", "gold_answer": "Turnaround time is completion time minus arrival time. Waiting time is turnaround time minus burst time, the total time spent in the ready queue."}
+{"id": "viva-028", "type": "qa", "topic": "CPU Scheduling", "question": "Why can't SJF be implemented exactly?", "gold_answer": "The length of the next CPU burst is not known in advance. It must be predicted, usually with exponential averaging of previous bursts."}
+{"id": "viva-033", "type": "qa", "topic": "CPU Scheduling", "question": "What is a multilevel feedback queue?", "gold_answer": "A scheduler with several queues of different priorities where processes move between queues based on their CPU usage. CPU-heavy processes sink to lower queues and interactive ones stay high."}
+{"id": "viva-035", "type": "qa", "topic": "Process Synchronization", "question": "What is a critical section?", "gold_answer": "The part of a program where it accesses shared data. Only one process should execute its critical section at a time."}
+{"id": "viva-040", "type": "qa", "topic": "Process Synchronization", "question": "What are the initial values of the semaphores in the bounded buffer problem?", "gold_answer": "mutex = 1, empty = n (the buffer size) and full = 0."}
+{"id": "viva-042", "type": "qa", "topic": "Process Synchronization", "question": "How can the dining philosophers deadlock be avoided?", "gold_answer": "Allow at most four philosophers at the table, let a philosopher pick up both chopsticks only if both are free, or make odd philosophers pick up the left first and even ones the right first."}
+{"id": "viva-046", "type": "qa", "topic": "Deadlocks", "question": "What are the four necessary conditions for deadlock?", "gold_answer": "Mutual exclusion, hold and wait, no preemption and circular wait. All four must hold at the same time."}
+{"id": "viva-048", "type": "qa", "topic": "Deadlocks", "question": "Is an unsafe state always a deadlock?", "gold_answer": "No. An unsafe state only means deadlock is possible; processes may still release resources before requesting their maximum."}
+{"id": "viva-050", "type": "qa", "topic": "Deadlocks", "question": "How can circular wait be prevented?", "gold_answer": "By numbering all resource types and requiring every process to request resources in increasing order of their numbers."}
+{"id": "viva-055", "type": "qa", "topic": "Memory Management", "question": "What are the base and limit registers used for?", "gold_answer": "The base register holds the smallest legal physical address of a process and the limit register its size; every address is checked against them for protection."}
+{"id": "viva-059", "type": "qa", "topic": "Memory Management", "question": "How is a logical address divided in paging?", "gold_answer": "Into a page number, which indexes the page table, and an offset within the page."}
+{"id": "viva-060", "type": "qa", "topic": "Memory Management", "question": "What is a TLB hit?", "gold_answer": "When the page number is found in the TLB, so the frame number is obtained without accessing the page table in memory."}
+{"id": "viva-070", "type": "qa", "topic": "Virtual Memory", "question": "What is thrashing?", "gold_answer": "When a process spends more time paging than executing because it does not have enough frames for its working set. CPU utilization drops sharply."}
+{"id": "viva-071", "type": "qa", "topic": "Virtual Memory", "question": "What is the working set?", "gold_answer": "The set of pages a process referenced in its most recent Δ (delta) memory references; it approximates the pages it currently needs."}
+{"id": "viva-072", "type": "qa", "topic": "Virtual Memory", "question": "What is the purpose of the reference bit?", "gold_answer": "The hardware sets it when a page is accessed, so the OS can approximate LRU, for example in the second-chance (clock) algorithm."}
+{"id": "viva-076", "type": "qa", "topic": "File Systems", "question": "Where is the file name stored in UNIX?", "gold_answer": "In the directory entry, which maps the name to the inode number."}
+{"id": "viva-078", "type": "qa", "topic": "File Systems", "question": "Which allocation method has no external fragmentation and supports direct access?", "gold_answer": "Indexed allocation."}
+{"id": "viva-080", "type": "qa", "topic": "File Systems", "question": "How does a bit vector track free space?", "gold_answer": "Each disk block has one bit; for example 1 means free and 0 means allocated. It is simple and makes finding consecutive free blocks easy."}
+{"id": "viva-086", "type": "qa", "topic": "Disk Scheduling", "question": "How does LOOK differ from SCAN?", "gold_answer": "LOOK reverses at the last request in the current direction instead of going all the way to the end of the disk."}
+{"id": "viva-088", "type": "qa", "topic": "Disk Scheduling", "question": "What is RAID 1?", "gold_answer": "Mirroring: every block is written to two disks, so data survives a single disk failure at the cost of double storage."}
+{"id": "viva-091", "type": "qa", "topic": "I/O Systems", "question": "What is spooling?", "gold_answer": "Holding output for a device, like a printer, in a buffer on disk so that several processes can send jobs while the device prints them one at a time."}
+{"id": "viva-092", "type": "qa", "topic": "I/O Systems", "question": "What is the difference between a buffer and a cache?", "gold_answer": "A buffer may hold the only copy of data while it is moved between a device and an application. A cache holds a copy of data that also exists elsewhere, to make access faster."}
+{"id": "viva-095", "type": "qa", "topic": "System Calls", "question": "What does fork() return?", "gold_answer": "0 in the child, the child's PID in the parent, and -1 if fork fails."}
+{"id": "viva-098", "type": "qa", "topic": "System Calls", "question": "Why do we use fork() and exec() together?", "gold_answer": "fork() creates a new process and exec() makes that new process run a different program, while the parent can continue or wait. This is how the shell runs commands."}
+{"id": "viva-102", "type": "qa", "topic": "System Calls", "question": "What does read() return at end of file?", "gold_answer": "0."}
+{"id": "viva-104", "type": "qa", "topic": "Inter-Process Communication", "question": "What are the two fundamental IPC models?", "gold_answer": "Shared memory and message passing."}
+{"id": "viva-105", "type": "qa", "topic": "Inter-Process Communication", "question": "Which IPC method is faster, shared memory or message passing?", "gold_answer": "Shared memory, because after setup the processes read and write memory directly without kernel calls. It needs explicit synchronization."}
+{"id": "viva-111", "type": "qa", "topic": "Linux Commands", "question": "What does chmod 755 mean?", "gold_answer": "Owner gets read, write and execute (7); group and others get read and execute (5), shown as rwxr-xr-x."}
+{"id": "viva-116", "type": "qa", "topic": "Linux Commands", "question": "What does the pipe symbol | do in the shell?", "gold_answer": "It sends the standard output of the command on its left as standard input to the command on its right."}
+{"id": "viva-117", "type": "qa", "topic": "Linux Commands", "question": "How do you run a command in the background?", "gold_answer": "Put & at the end of the command. Use jobs to list background jobs and fg to bring one to the foreground."}
+{"id": "viva-122", "type": "qa", "topic": "Shell Programming", "question": "Why must there be no spaces around = in a variable assignment?", "gold_answer": "With spaces, bash treats the variable name as a command and the rest as its arguments, so x = 5 fails while x=5 works."}
+{"id": "viva-124", "type": "qa", "topic": "Shell Programming", "question": "How do you do decimal arithmetic in shell?", "gold_answer": "Use bc, for example echo \"scale=2; 10/3\" | bc, since $(( )) only handles integers."}
+{"id": "viva-128", "type": "qa", "topic": "Protection and Security", "question": "What is the principle of least privilege?", "gold_answer": "Every program and user should get only the minimum privileges needed to do its job, which limits damage from bugs or attacks."}
+{"id": "viva-130", "type": "qa", "topic": "Protection and Security", "question": "What is the setuid bit?", "gold_answer": "When set on an executable, the program runs with the privileges of the file's owner instead of the user who started it, for example passwd running as root."}
+{"id": "viva-133", "type": "qa", "topic": "Virtualization", "question": "How are containers different from virtual machines?", "gold_answer": "Containers share the host's kernel and isolate processes using namespaces and cgroups, so they are lightweight and start fast. VMs each run a full guest OS on virtual hardware."}
+{"id": "search-001", "type": "retrieval", "topic": "Virtual Memory", "question": "belady anomaly"}
+{"id": "search-002", "type": "retrieval", "topic": "CPU Scheduling", "question": "rr time quantum too small"}
+{"id": "search-003", "type": "retrieval", "topic": "CPU Scheduling", "question": "convoy effect"}
+{"id": "search-004", "type": "retrieval", "topic": "Deadlocks", "question": "four conditions for deadlock"}
+{"id": "search-005", "type": "retrieval", "topic": "Deadlocks", "question": "bankers algorithm safe sequence"}
+{"id": "search-006", "type": "retrieval", "topic": "Memory Management", "question": "difference between paging and segmentation"}
+{"id": "search-007", "type": "retrieval", "topic": "Memory Management", "question": "what is a TLB"}
+{"id": "search-008", "type": "retrieval", "topic": "Virtual Memory", "question": "page fault effective access time"}
+{"id": "search-009", "type": "retrieval", "topic": "Virtual Memory", "question": "what is thrashing"}
+{"id": "search-010", "type": "retrieval", "topic": "Process Synchronization", "question": "producer consumer using semaphores"}
+{"id": "search-011", "type": "retrieval", "topic": "Process Synchronization", "question": "race condition counter++"}
+{"id": "search-012", "type": "retrieval", "topic": "System Calls", "question": "what does fork return in child"}
+{"id": "search-013", "type": "retrieval", "topic": "System Calls", "question": "code after exec never runs"}
+{"id": "search-014", "type": "retrieval", "topic": "Process Management", "question": "zombie process"}
+{"id": "search-015", "type": "retrieval", "topic": "Process Management", "question": "what is in a PCB"}
+{"id": "search-016", "type": "retrieval", "topic": "Threads", "question": "pthread_create"}
+{"id": "search-017", "type": "retrieval", "topic": "Threads", "question": "one-to-one threading model"}
+{"id": "search-018", "type": "retrieval", "topic": "File Systems", "question": "inode direct and indirect pointers"}
+{"id": "search-019", "type": "retrieval", "topic": "File Systems", "question": "linked vs indexed allocation"}
+{"id": "search-020", "type": "retrieval", "topic": "Disk Scheduling", "question": "sstf vs scan"}
+{"id": "search-021", "type": "retrieval", "topic": "Inter-Process Communication", "question": "pipe read end write end"}
+{"id": "search-022", "type": "retrieval", "topic": "Inter-Process Communication", "question": "shared memory shmget"}
+{"id": "search-023", "type": "retrieval", "topic": "Linux Commands", "question": "chmod 755"}
+{"id": "search-024", "type": "retrieval", "topic": "Linux Commands", "question": "grep -v"}
+{"id": "search-025", "type": "retrieval", "topic": "Shell Programming", "question": "what does $# mean in shell script"}
+{"id": "search-026", "type": "retrieval", "topic": "Shell Programming", "question": "case statement in bash"}
+{"id": "search-027", "type": "retrieval", "topic": "OS Basics", "question": "kernel mode vs user mode"}
+{"id": "search-028", "type": "retrieval", "topic": "OS Basics", "question": "microkernel vs monolithic"}
