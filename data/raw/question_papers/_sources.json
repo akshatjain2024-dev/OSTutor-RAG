@@ -1,0 +1,40 @@
+{
+  "BACSE106-CAT-1-C1-2026-2027.pdf": {
+    "topic": "auto",
+    "doc_type": "past_paper",
+    "source": "Past paper: BACSE106 CAT-1, Fall 2026-27, slot C1",
+    "skip": true,
+    "note": "Questions transcribed cleanly into dataset/src/question_bank.txt; the scanned/OCR text would only add noisy duplicates."
+  },
+  "BACSE106-CAT-1-C2-2026-2027.pdf": {
+    "topic": "auto",
+    "doc_type": "past_paper",
+    "source": "Past paper: BACSE106 CAT-1, Fall 2026-27, slot C2",
+    "skip": true,
+    "note": "Questions transcribed cleanly into dataset/src/question_bank.txt; the scanned/OCR text would only add noisy duplicates."
+  },
+  "BACSE106-CAT-1-G1-2025-2026.pdf": {
+    "topic": "auto",
+    "doc_type": "past_paper",
+    "source": "Past paper: BACSE106 CAT-1, Winter 2025-26, slot G1",
+    "skip": true,
+    "note": "Questions transcribed cleanly into dataset/src/question_bank.txt; the scanned/OCR text would only add noisy duplicates."
+  },
+  "BACSE106-CAT-1-G2-2025-2026.pdf": {
+    "topic": "auto",
+    "doc_type": "past_paper",
+    "source": "Past paper: BACSE106 CAT-1, Winter 2025-26, slot G2 (with answer key)"
+  },
+  "BACSE106-CAT-2-G1-2025-2026.pdf": {
+    "topic": "auto",
+    "doc_type": "past_paper",
+    "source": "Past paper: BACSE106 CAT-2, Winter 2025-26, slot G1 (answer key)"
+  },
+  "BACSE106-CAT-2-G2-2025-2026.pdf": {
+    "topic": "auto",
+    "doc_type": "past_paper",
+    "source": "Past paper: BACSE106 CAT-2, Winter 2025-26, slot G2",
+    "skip": true,
+    "note": "Questions transcribed cleanly into dataset/src/question_bank.txt; the scanned/OCR text would only add noisy duplicates."
+  }
+}
